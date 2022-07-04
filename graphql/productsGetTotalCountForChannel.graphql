@@ -1,0 +1,5 @@
+query ProductsGetTotalCountForChannel($channel: String!) {
+	products(channel: $channel) {
+		totalCount
+	}
+}

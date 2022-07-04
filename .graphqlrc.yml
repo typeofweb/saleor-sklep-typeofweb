@@ -1,0 +1,39 @@
+overwrite: true
+schema: ${GRAPHQL_URL}
+documents: './graphql/**/*.graphql'
+extensions:
+  codegen:
+    generates:
+      ./generated/graphql.tsx:
+        plugins:
+          - 'typescript'
+          - 'typescript-operations'
+          - 'typescript-react-apollo'
+        config:
+          reactApolloVersion: 3
+          withHooks: true
+          withHOC: false
+          withComponent: false
+          immutableTypes: true
+          dedupeOperationSuffix: true
+          useTypeImports: true
+          scalars:
+            DateTime: string
+      ./generated/page.tsx:
+        config:
+          reactApolloVersion: 3
+          documentMode: external
+          importDocumentNodeExternallyFrom: ./graphql
+          withHooks: false
+          withHOC: false
+          apolloClientInstanceImport: '../lib/apolloClient'
+          scalars:
+            DateTime: Date
+        preset: import-types
+        presetConfig:
+          typesPath: ./graphql
+        plugins:
+          - graphql-codegen-apollo-next-ssr
+    hooks:
+      afterAllFileWrite:
+        - prettier --write
