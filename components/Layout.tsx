@@ -1,6 +1,7 @@
 import { Fragment, ReactNode, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MenuIcon, ShoppingCartIcon, XIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 
 // @todo fetch these
 const currencies = ['PLN', 'EUR'];
@@ -189,14 +190,18 @@ export function Layout({ children }: LayoutProps) {
 								<div className="h-16 flex items-center justify-between">
 									{/* Logo (lg+) */}
 									<div className="hidden lg:flex lg:items-center">
-										<a href="#">
-											<span className="sr-only">Workflow</span>
-											<img
-												className="h-8 w-auto"
-												src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-												alt=""
-											/>
-										</a>
+										<Link href="/">
+											<a>
+												<span className="sr-only">
+													Sklep Type of Web - strona główna
+												</span>
+												<img
+													className="h-8 w-auto"
+													src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+													alt=""
+												/>
+											</a>
+										</Link>
 									</div>
 
 									<div className="hidden h-full lg:flex">
@@ -232,17 +237,18 @@ export function Layout({ children }: LayoutProps) {
 									</div>
 
 									{/* Logo (lg-) */}
-									<a
-										href="#"
-										className="lg:hidden"
-									>
-										<span className="sr-only">Workflow</span>
-										<img
-											src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-											alt=""
-											className="h-8 w-auto"
-										/>
-									</a>
+									<Link href="/">
+										<a className="lg:hidden">
+											<span className="sr-only">
+												Sklep Type of Web - strona główna
+											</span>
+											<img
+												src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
+												alt=""
+												className="h-8 w-auto"
+											/>
+										</a>
+									</Link>
 
 									<div className="flex-1 flex items-center justify-end">
 										<div className="flex items-center lg:ml-8">

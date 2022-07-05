@@ -5,7 +5,7 @@ const buildEslintCommand = (filenames) =>
 		.map((f) => path.relative(process.cwd(), f))
 		.join(' --file ')}`;
 
-const buildTscCommand = (filenames) => `tsc --noEmit -p tsconfig.json`;
+const buildTscCommand = () => `tsc --noEmit -p tsconfig.json`;
 
 module.exports = {
 	'*.{ts,tsx}': [buildTscCommand],

@@ -1,8 +1,14 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '../lib/utils';
-import { ProductDetailsFragment } from '../generated/graphql';
+import {
+	ProductDetailsFragment,
+	useCheckoutAddToCartMutation,
+} from '../generated/graphql';
 import Image from 'next/future/image';
+import { formatMoney } from '../lib/format';
+import { useCheckout } from '../lib/useCheckout';
+import { useRouter } from 'next/router';
 
 interface ProductDetailsProps {
 	product: Omit<ProductDetailsFragment, 'description'> & {
@@ -11,6 +17,33 @@ interface ProductDetailsProps {
 }
 
 export function ProductDetails({ product }: ProductDetailsProps) {
+	const [addToCart] = useCheckoutAddToCartMutation();
+	const { token } = useCheckout();
+	const router = useRouter();
+
+	const handleBuy = async () => {
+		if (!token || !product.defaultVariant?.id) {
+			return;
+		}
+
+		const result = await addToCart({
+			variables: { checkoutToken: token, variantId: product.defaultVariant.id },
+		});
+
+		if (result.errors?.length) {
+			// @todo display this somehow
+			console.warn(result.errors);
+			return;
+		}
+		if (result.data?.checkoutLinesAdd?.errors?.length) {
+			// @todo display this somehow
+			console.warn(result.data?.checkoutLinesAdd?.errors);
+			return;
+		}
+
+		router.push('/bag');
+	};
+
 	return (
 		<div className="bg-white">
 			<div className="mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -24,6 +57,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 									src={product.media[0].url}
 									alt={product.media[0].alt}
 									className="object-center object-contain"
+									priority={true}
 								/>
 							)}
 						</div>
@@ -55,9 +89,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 							<button
 								type="button"
 								className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+								onClick={handleBuy}
 							>
-								Pay {product.pricing?.priceRange?.start?.gross.amount}{' '}
-								{product.pricing?.priceRange?.start?.gross.currency}
+								Pay
+								{/* @todo: pricing is null here, why? */}
+								{product.pricing?.priceRange?.start?.gross &&
+									formatMoney(
+										product.pricing.priceRange.start.gross.amount,
+										product.pricing.priceRange.start.gross.currency,
+									)}
 							</button>
 						</div>
 

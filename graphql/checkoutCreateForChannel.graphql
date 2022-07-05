@@ -1,0 +1,7 @@
+mutation CheckoutCreateForChannel($channel: String!) {
+	checkoutCreate(input: { channel: $channel, lines: [] }) {
+		checkout {
+			token
+		}
+	}
+}

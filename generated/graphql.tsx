@@ -20613,6 +20613,167 @@ export type _Service = {
 	readonly sdl?: Maybe<Scalars['String']>;
 };
 
+export type CheckoutAddToCartMutationVariables = Exact<{
+	checkoutToken: Scalars['UUID'];
+	variantId: Scalars['ID'];
+}>;
+
+export type CheckoutAddToCartMutation = {
+	readonly __typename?: 'Mutation';
+	readonly checkoutLinesAdd?: {
+		readonly __typename?: 'CheckoutLinesAdd';
+		readonly checkout?: {
+			readonly __typename?: 'Checkout';
+			readonly id: string;
+			readonly lines: ReadonlyArray<{
+				readonly __typename?: 'CheckoutLine';
+				readonly id: string;
+				readonly quantity: number;
+				readonly variant: {
+					readonly __typename?: 'ProductVariant';
+					readonly name: string;
+					readonly product: {
+						readonly __typename?: 'Product';
+						readonly name: string;
+					};
+				};
+			}>;
+		} | null;
+		readonly errors: ReadonlyArray<{
+			readonly __typename?: 'CheckoutError';
+			readonly message?: string | null;
+		}>;
+	} | null;
+};
+
+export type CheckoutCreateForChannelMutationVariables = Exact<{
+	channel: Scalars['String'];
+}>;
+
+export type CheckoutCreateForChannelMutation = {
+	readonly __typename?: 'Mutation';
+	readonly checkoutCreate?: {
+		readonly __typename?: 'CheckoutCreate';
+		readonly checkout?: {
+			readonly __typename?: 'Checkout';
+			readonly token: any;
+		} | null;
+	} | null;
+};
+
+export type CheckoutDetailsFragment = {
+	readonly __typename?: 'Checkout';
+	readonly id: string;
+	readonly email?: string | null;
+	readonly lines: ReadonlyArray<{
+		readonly __typename?: 'CheckoutLine';
+		readonly id: string;
+		readonly quantity: number;
+		readonly totalPrice: {
+			readonly __typename?: 'TaxedMoney';
+			readonly gross: {
+				readonly __typename?: 'Money';
+				readonly amount: number;
+				readonly currency: string;
+			};
+		};
+		readonly variant: {
+			readonly __typename?: 'ProductVariant';
+			readonly name: string;
+			readonly product: {
+				readonly __typename?: 'Product';
+				readonly id: string;
+				readonly name: string;
+				readonly slug: string;
+				readonly thumbnail?: {
+					readonly __typename?: 'Image';
+					readonly url: string;
+					readonly alt?: string | null;
+				} | null;
+			};
+			readonly pricing?: {
+				readonly __typename?: 'VariantPricingInfo';
+				readonly price?: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				} | null;
+			} | null;
+		};
+	}>;
+	readonly totalPrice: {
+		readonly __typename?: 'TaxedMoney';
+		readonly gross: {
+			readonly __typename?: 'Money';
+			readonly amount: number;
+			readonly currency: string;
+		};
+	};
+};
+
+export type CheckoutGetByTokenQueryVariables = Exact<{
+	checkoutToken: Scalars['UUID'];
+}>;
+
+export type CheckoutGetByTokenQuery = {
+	readonly __typename?: 'Query';
+	readonly checkout?: {
+		readonly __typename?: 'Checkout';
+		readonly id: string;
+		readonly email?: string | null;
+		readonly lines: ReadonlyArray<{
+			readonly __typename?: 'CheckoutLine';
+			readonly id: string;
+			readonly quantity: number;
+			readonly totalPrice: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			};
+			readonly variant: {
+				readonly __typename?: 'ProductVariant';
+				readonly name: string;
+				readonly product: {
+					readonly __typename?: 'Product';
+					readonly id: string;
+					readonly name: string;
+					readonly slug: string;
+					readonly thumbnail?: {
+						readonly __typename?: 'Image';
+						readonly url: string;
+						readonly alt?: string | null;
+					} | null;
+				};
+				readonly pricing?: {
+					readonly __typename?: 'VariantPricingInfo';
+					readonly price?: {
+						readonly __typename?: 'TaxedMoney';
+						readonly gross: {
+							readonly __typename?: 'Money';
+							readonly amount: number;
+							readonly currency: string;
+						};
+					} | null;
+				} | null;
+			};
+		}>;
+		readonly totalPrice: {
+			readonly __typename?: 'TaxedMoney';
+			readonly gross: {
+				readonly __typename?: 'Money';
+				readonly amount: number;
+				readonly currency: string;
+			};
+		};
+	} | null;
+};
+
 export type ProductListItemFragment = {
 	readonly __typename?: 'Product';
 	readonly id: string;
@@ -20687,6 +20848,10 @@ export type ProductDetailsFragment = {
 	readonly name: string;
 	readonly slug: string;
 	readonly description?: any | null;
+	readonly defaultVariant?: {
+		readonly __typename?: 'ProductVariant';
+		readonly id: string;
+	} | null;
 	readonly attributes: ReadonlyArray<{
 		readonly __typename?: 'SelectedAttribute';
 		readonly attribute: {
@@ -20733,6 +20898,10 @@ export type GetProductDetailsQuery = {
 		readonly name: string;
 		readonly slug: string;
 		readonly description?: any | null;
+		readonly defaultVariant?: {
+			readonly __typename?: 'ProductVariant';
+			readonly id: string;
+		} | null;
 		readonly attributes: ReadonlyArray<{
 			readonly __typename?: 'SelectedAttribute';
 			readonly attribute: {
@@ -20795,6 +20964,48 @@ export type ProductsSlugsQuery = {
 	} | null;
 };
 
+export const CheckoutDetailsFragmentDoc = gql`
+	fragment CheckoutDetails on Checkout {
+		id
+		email
+		lines {
+			id
+			quantity
+			totalPrice {
+				gross {
+					amount
+					currency
+				}
+			}
+			variant {
+				product {
+					id
+					name
+					slug
+					thumbnail {
+						url
+						alt
+					}
+				}
+				pricing {
+					price {
+						gross {
+							amount
+							currency
+						}
+					}
+				}
+				name
+			}
+		}
+		totalPrice {
+			gross {
+				amount
+				currency
+			}
+		}
+	}
+`;
 export const ProductListItemFragmentDoc = gql`
 	fragment ProductListItem on Product {
 		id
@@ -20821,6 +21032,9 @@ export const ProductDetailsFragmentDoc = gql`
 	fragment ProductDetails on Product {
 		id
 		name
+		defaultVariant {
+			id
+		}
 		attributes {
 			attribute {
 				name
@@ -20849,6 +21063,187 @@ export const ProductDetailsFragmentDoc = gql`
 		description
 	}
 `;
+export const CheckoutAddToCartDocument = gql`
+	mutation CheckoutAddToCart($checkoutToken: UUID!, $variantId: ID!) {
+		checkoutLinesAdd(
+			token: $checkoutToken
+			lines: [{ quantity: 1, variantId: $variantId }]
+		) {
+			checkout {
+				id
+				lines {
+					id
+					quantity
+					variant {
+						name
+						product {
+							name
+						}
+					}
+				}
+			}
+			errors {
+				message
+			}
+		}
+	}
+`;
+export type CheckoutAddToCartMutationFn = Apollo.MutationFunction<
+	CheckoutAddToCartMutation,
+	CheckoutAddToCartMutationVariables
+>;
+
+/**
+ * __useCheckoutAddToCartMutation__
+ *
+ * To run a mutation, you first call `useCheckoutAddToCartMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckoutAddToCartMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkoutAddToCartMutation, { data, loading, error }] = useCheckoutAddToCartMutation({
+ *   variables: {
+ *      checkoutToken: // value for 'checkoutToken'
+ *      variantId: // value for 'variantId'
+ *   },
+ * });
+ */
+export function useCheckoutAddToCartMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		CheckoutAddToCartMutation,
+		CheckoutAddToCartMutationVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useMutation<
+		CheckoutAddToCartMutation,
+		CheckoutAddToCartMutationVariables
+	>(CheckoutAddToCartDocument, options);
+}
+export type CheckoutAddToCartMutationHookResult = ReturnType<
+	typeof useCheckoutAddToCartMutation
+>;
+export type CheckoutAddToCartMutationResult =
+	Apollo.MutationResult<CheckoutAddToCartMutation>;
+export type CheckoutAddToCartMutationOptions = Apollo.BaseMutationOptions<
+	CheckoutAddToCartMutation,
+	CheckoutAddToCartMutationVariables
+>;
+export const CheckoutCreateForChannelDocument = gql`
+	mutation CheckoutCreateForChannel($channel: String!) {
+		checkoutCreate(input: { channel: $channel, lines: [] }) {
+			checkout {
+				token
+			}
+		}
+	}
+`;
+export type CheckoutCreateForChannelMutationFn = Apollo.MutationFunction<
+	CheckoutCreateForChannelMutation,
+	CheckoutCreateForChannelMutationVariables
+>;
+
+/**
+ * __useCheckoutCreateForChannelMutation__
+ *
+ * To run a mutation, you first call `useCheckoutCreateForChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckoutCreateForChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkoutCreateForChannelMutation, { data, loading, error }] = useCheckoutCreateForChannelMutation({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useCheckoutCreateForChannelMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		CheckoutCreateForChannelMutation,
+		CheckoutCreateForChannelMutationVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useMutation<
+		CheckoutCreateForChannelMutation,
+		CheckoutCreateForChannelMutationVariables
+	>(CheckoutCreateForChannelDocument, options);
+}
+export type CheckoutCreateForChannelMutationHookResult = ReturnType<
+	typeof useCheckoutCreateForChannelMutation
+>;
+export type CheckoutCreateForChannelMutationResult =
+	Apollo.MutationResult<CheckoutCreateForChannelMutation>;
+export type CheckoutCreateForChannelMutationOptions =
+	Apollo.BaseMutationOptions<
+		CheckoutCreateForChannelMutation,
+		CheckoutCreateForChannelMutationVariables
+	>;
+export const CheckoutGetByTokenDocument = gql`
+	query CheckoutGetByToken($checkoutToken: UUID!) {
+		checkout(token: $checkoutToken) {
+			...CheckoutDetails
+		}
+	}
+	${CheckoutDetailsFragmentDoc}
+`;
+
+/**
+ * __useCheckoutGetByTokenQuery__
+ *
+ * To run a query within a React component, call `useCheckoutGetByTokenQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckoutGetByTokenQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckoutGetByTokenQuery({
+ *   variables: {
+ *      checkoutToken: // value for 'checkoutToken'
+ *   },
+ * });
+ */
+export function useCheckoutGetByTokenQuery(
+	baseOptions: Apollo.QueryHookOptions<
+		CheckoutGetByTokenQuery,
+		CheckoutGetByTokenQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useQuery<
+		CheckoutGetByTokenQuery,
+		CheckoutGetByTokenQueryVariables
+	>(CheckoutGetByTokenDocument, options);
+}
+export function useCheckoutGetByTokenLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		CheckoutGetByTokenQuery,
+		CheckoutGetByTokenQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useLazyQuery<
+		CheckoutGetByTokenQuery,
+		CheckoutGetByTokenQueryVariables
+	>(CheckoutGetByTokenDocument, options);
+}
+export type CheckoutGetByTokenQueryHookResult = ReturnType<
+	typeof useCheckoutGetByTokenQuery
+>;
+export type CheckoutGetByTokenLazyQueryHookResult = ReturnType<
+	typeof useCheckoutGetByTokenLazyQuery
+>;
+export type CheckoutGetByTokenQueryResult = Apollo.QueryResult<
+	CheckoutGetByTokenQuery,
+	CheckoutGetByTokenQueryVariables
+>;
 export const ProductsGetForChannelDocument = gql`
 	query ProductsGetForChannel($first: Int!, $channel: String!) {
 		products(first: $first, channel: $channel) {

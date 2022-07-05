@@ -3,3 +3,10 @@ export type InferGetStaticPathsType<T> = T extends () => Promise<{
 }>
 	? { params?: R }
 	: never;
+
+export type JSONValue =
+	| string
+	| number
+	| boolean
+	| { [x: string]: JSONValue }
+	| Array<JSONValue>;

@@ -7,15 +7,18 @@ import { ApolloProvider } from '@apollo/client';
 import { getApolloClient } from '../lib/apolloClient';
 import { useRef } from 'react';
 import { Layout } from '../components/Layout';
+import { CheckoutProvider } from '../components/CheckoutProvider';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
 	const apolloClient = useRef(getApolloClient());
 
 	return (
 		<ApolloProvider client={apolloClient.current!}>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
+			<CheckoutProvider>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</CheckoutProvider>
 		</ApolloProvider>
 	);
 }

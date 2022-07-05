@@ -1,0 +1,46 @@
+fragment CheckoutDetails on Checkout {
+	id
+	email
+	lines {
+		id
+		quantity
+		totalPrice {
+			gross {
+				amount
+				currency
+			}
+		}
+		variant {
+			product {
+				id
+				name
+				slug
+				thumbnail {
+					url
+					alt
+				}
+			}
+			pricing {
+				price {
+					gross {
+						amount
+						currency
+					}
+				}
+			}
+			name
+		}
+	}
+	totalPrice {
+		gross {
+			amount
+			currency
+		}
+	}
+}
+
+query CheckoutGetByToken($checkoutToken: UUID!) {
+	checkout(token: $checkoutToken) {
+		...CheckoutDetails
+	}
+}

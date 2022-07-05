@@ -1,6 +1,9 @@
 fragment ProductDetails on Product {
 	id
 	name
+	defaultVariant {
+		id
+	}
 	attributes {
 		attribute {
 			name

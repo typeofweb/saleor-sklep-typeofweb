@@ -1,5 +1,6 @@
 import { ProductListItemFragment } from '../generated/graphql';
 import Image from 'next/future/image';
+import { formatMoney } from '../lib/format';
 
 interface ProductsListProps {
 	products: readonly ProductListItemFragment[];
@@ -28,10 +29,14 @@ export default function ProductsList({ products }: ProductsListProps) {
 								)}
 							</div>
 							<h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-							<p className="mt-1 text-lg font-medium text-gray-900">
-								{product.pricing?.priceRange?.start?.gross.amount}{' '}
-								{product.pricing?.priceRange?.start?.gross.currency}
-							</p>
+							{product.pricing?.priceRange?.start?.gross && (
+								<p className="mt-1 text-lg font-medium text-gray-900">
+									{formatMoney(
+										product.pricing.priceRange.start.gross.amount,
+										product.pricing.priceRange.start.gross.currency,
+									)}
+								</p>
+							)}
 						</a>
 					))}
 				</div>
