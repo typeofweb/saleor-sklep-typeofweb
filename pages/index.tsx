@@ -1,15 +1,12 @@
 import { InferGetStaticPropsType } from 'next';
+import ProductsList from '../components/ProductsList';
 import { getServerPageProductsGetForChannel } from '../generated/page';
 
 const IndexPage = ({
 	products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
-		<ul>
-			{products?.edges.map((p) => (
-				<li key={p.node.id}>{p.node.name}</li>
-			))}
-		</ul>
+		products && <ProductsList products={products.edges.map((p) => p.node)} />
 	);
 };
 
@@ -30,5 +27,6 @@ export const getStaticProps = async () => {
 		props: {
 			products,
 		},
+		revalidate: 60,
 	};
 };

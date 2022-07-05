@@ -35,6 +35,37 @@ export type PageProductsGetForChannelComp = React.FC<{
 export const ssrProductsGetForChannel = {
 	getServerPage: getServerPageProductsGetForChannel,
 };
+export async function getServerPageGetProductDetails(
+	options: Omit<
+		Apollo.QueryOptions<Types.GetProductDetailsQueryVariables>,
+		'query'
+	>,
+	ctx?: any,
+) {
+	const apolloClient = getApolloClient(ctx);
+
+	const data = await apolloClient.query<Types.GetProductDetailsQuery>({
+		...options,
+		query: Operations.GetProductDetailsDocument,
+	});
+
+	const apolloState = apolloClient.cache.extract();
+
+	return {
+		props: {
+			apolloState: apolloState,
+			data: data?.data,
+			error: data?.error ?? data?.errors ?? null,
+		},
+	};
+}
+export type PageGetProductDetailsComp = React.FC<{
+	data?: Types.GetProductDetailsQuery;
+	error?: Apollo.ApolloError;
+}>;
+export const ssrGetProductDetails = {
+	getServerPage: getServerPageGetProductDetails,
+};
 export async function getServerPageProductsGetTotalCountForChannel(
 	options: Omit<
 		Apollo.QueryOptions<Types.ProductsGetTotalCountForChannelQueryVariables>,
@@ -66,4 +97,35 @@ export type PageProductsGetTotalCountForChannelComp = React.FC<{
 }>;
 export const ssrProductsGetTotalCountForChannel = {
 	getServerPage: getServerPageProductsGetTotalCountForChannel,
+};
+export async function getServerPageProductsSlugs(
+	options: Omit<
+		Apollo.QueryOptions<Types.ProductsSlugsQueryVariables>,
+		'query'
+	>,
+	ctx?: any,
+) {
+	const apolloClient = getApolloClient(ctx);
+
+	const data = await apolloClient.query<Types.ProductsSlugsQuery>({
+		...options,
+		query: Operations.ProductsSlugsDocument,
+	});
+
+	const apolloState = apolloClient.cache.extract();
+
+	return {
+		props: {
+			apolloState: apolloState,
+			data: data?.data,
+			error: data?.error ?? data?.errors ?? null,
+		},
+	};
+}
+export type PageProductsSlugsComp = React.FC<{
+	data?: Types.ProductsSlugsQuery;
+	error?: Apollo.ApolloError;
+}>;
+export const ssrProductsSlugs = {
+	getServerPage: getServerPageProductsSlugs,
 };

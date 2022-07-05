@@ -20613,6 +20613,33 @@ export type _Service = {
 	readonly sdl?: Maybe<Scalars['String']>;
 };
 
+export type ProductListItemFragment = {
+	readonly __typename?: 'Product';
+	readonly id: string;
+	readonly name: string;
+	readonly slug: string;
+	readonly media?: ReadonlyArray<{
+		readonly __typename?: 'ProductMedia';
+		readonly url: string;
+		readonly alt: string;
+	}> | null;
+	readonly pricing?: {
+		readonly __typename?: 'ProductPricingInfo';
+		readonly onSale?: boolean | null;
+		readonly priceRange?: {
+			readonly __typename?: 'TaxedMoneyRange';
+			readonly start?: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			} | null;
+		} | null;
+	} | null;
+};
+
 export type ProductsGetForChannelQueryVariables = Exact<{
 	first: Scalars['Int'];
 	channel: Scalars['String'];
@@ -20628,8 +20655,116 @@ export type ProductsGetForChannelQuery = {
 				readonly __typename?: 'Product';
 				readonly id: string;
 				readonly name: string;
+				readonly slug: string;
+				readonly media?: ReadonlyArray<{
+					readonly __typename?: 'ProductMedia';
+					readonly url: string;
+					readonly alt: string;
+				}> | null;
+				readonly pricing?: {
+					readonly __typename?: 'ProductPricingInfo';
+					readonly onSale?: boolean | null;
+					readonly priceRange?: {
+						readonly __typename?: 'TaxedMoneyRange';
+						readonly start?: {
+							readonly __typename?: 'TaxedMoney';
+							readonly gross: {
+								readonly __typename?: 'Money';
+								readonly amount: number;
+								readonly currency: string;
+							};
+						} | null;
+					} | null;
+				} | null;
 			};
 		}>;
+	} | null;
+};
+
+export type ProductDetailsFragment = {
+	readonly __typename?: 'Product';
+	readonly id: string;
+	readonly name: string;
+	readonly slug: string;
+	readonly description?: any | null;
+	readonly attributes: ReadonlyArray<{
+		readonly __typename?: 'SelectedAttribute';
+		readonly attribute: {
+			readonly __typename?: 'Attribute';
+			readonly name?: string | null;
+		};
+		readonly values: ReadonlyArray<{
+			readonly __typename?: 'AttributeValue';
+			readonly id: string;
+			readonly name?: string | null;
+		}>;
+	}>;
+	readonly media?: ReadonlyArray<{
+		readonly __typename?: 'ProductMedia';
+		readonly url: string;
+		readonly alt: string;
+	}> | null;
+	readonly pricing?: {
+		readonly __typename?: 'ProductPricingInfo';
+		readonly onSale?: boolean | null;
+		readonly priceRange?: {
+			readonly __typename?: 'TaxedMoneyRange';
+			readonly start?: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			} | null;
+		} | null;
+	} | null;
+};
+
+export type GetProductDetailsQueryVariables = Exact<{
+	slug: Scalars['String'];
+}>;
+
+export type GetProductDetailsQuery = {
+	readonly __typename?: 'Query';
+	readonly product?: {
+		readonly __typename?: 'Product';
+		readonly id: string;
+		readonly name: string;
+		readonly slug: string;
+		readonly description?: any | null;
+		readonly attributes: ReadonlyArray<{
+			readonly __typename?: 'SelectedAttribute';
+			readonly attribute: {
+				readonly __typename?: 'Attribute';
+				readonly name?: string | null;
+			};
+			readonly values: ReadonlyArray<{
+				readonly __typename?: 'AttributeValue';
+				readonly id: string;
+				readonly name?: string | null;
+			}>;
+		}>;
+		readonly media?: ReadonlyArray<{
+			readonly __typename?: 'ProductMedia';
+			readonly url: string;
+			readonly alt: string;
+		}> | null;
+		readonly pricing?: {
+			readonly __typename?: 'ProductPricingInfo';
+			readonly onSale?: boolean | null;
+			readonly priceRange?: {
+				readonly __typename?: 'TaxedMoneyRange';
+				readonly start?: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				} | null;
+			} | null;
+		} | null;
 	} | null;
 };
 
@@ -20645,17 +20780,86 @@ export type ProductsGetTotalCountForChannelQuery = {
 	} | null;
 };
 
+export type ProductsSlugsQueryVariables = Exact<{
+	channel: Scalars['String'];
+}>;
+
+export type ProductsSlugsQuery = {
+	readonly __typename?: 'Query';
+	readonly products?: {
+		readonly __typename?: 'ProductCountableConnection';
+		readonly edges: ReadonlyArray<{
+			readonly __typename?: 'ProductCountableEdge';
+			readonly node: { readonly __typename?: 'Product'; readonly slug: string };
+		}>;
+	} | null;
+};
+
+export const ProductListItemFragmentDoc = gql`
+	fragment ProductListItem on Product {
+		id
+		name
+		slug
+		media {
+			url
+			alt
+		}
+		pricing {
+			onSale
+			priceRange {
+				start {
+					gross {
+						amount
+						currency
+					}
+				}
+			}
+		}
+	}
+`;
+export const ProductDetailsFragmentDoc = gql`
+	fragment ProductDetails on Product {
+		id
+		name
+		attributes {
+			attribute {
+				name
+			}
+			values {
+				id
+				name
+			}
+		}
+		slug
+		media {
+			url
+			alt
+		}
+		pricing {
+			onSale
+			priceRange {
+				start {
+					gross {
+						amount
+						currency
+					}
+				}
+			}
+		}
+		description
+	}
+`;
 export const ProductsGetForChannelDocument = gql`
 	query ProductsGetForChannel($first: Int!, $channel: String!) {
 		products(first: $first, channel: $channel) {
 			edges {
 				node {
-					id
-					name
+					...ProductListItem
 				}
 			}
 		}
 	}
+	${ProductListItemFragmentDoc}
 `;
 
 /**
@@ -20708,6 +20912,65 @@ export type ProductsGetForChannelLazyQueryHookResult = ReturnType<
 export type ProductsGetForChannelQueryResult = Apollo.QueryResult<
 	ProductsGetForChannelQuery,
 	ProductsGetForChannelQueryVariables
+>;
+export const GetProductDetailsDocument = gql`
+	query GetProductDetails($slug: String!) {
+		product(slug: $slug) {
+			...ProductDetails
+		}
+	}
+	${ProductDetailsFragmentDoc}
+`;
+
+/**
+ * __useGetProductDetailsQuery__
+ *
+ * To run a query within a React component, call `useGetProductDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProductDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProductDetailsQuery({
+ *   variables: {
+ *      slug: // value for 'slug'
+ *   },
+ * });
+ */
+export function useGetProductDetailsQuery(
+	baseOptions: Apollo.QueryHookOptions<
+		GetProductDetailsQuery,
+		GetProductDetailsQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useQuery<
+		GetProductDetailsQuery,
+		GetProductDetailsQueryVariables
+	>(GetProductDetailsDocument, options);
+}
+export function useGetProductDetailsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		GetProductDetailsQuery,
+		GetProductDetailsQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useLazyQuery<
+		GetProductDetailsQuery,
+		GetProductDetailsQueryVariables
+	>(GetProductDetailsDocument, options);
+}
+export type GetProductDetailsQueryHookResult = ReturnType<
+	typeof useGetProductDetailsQuery
+>;
+export type GetProductDetailsLazyQueryHookResult = ReturnType<
+	typeof useGetProductDetailsLazyQuery
+>;
+export type GetProductDetailsQueryResult = Apollo.QueryResult<
+	GetProductDetailsQuery,
+	GetProductDetailsQueryVariables
 >;
 export const ProductsGetTotalCountForChannelDocument = gql`
 	query ProductsGetTotalCountForChannel($channel: String!) {
@@ -20766,4 +21029,66 @@ export type ProductsGetTotalCountForChannelLazyQueryHookResult = ReturnType<
 export type ProductsGetTotalCountForChannelQueryResult = Apollo.QueryResult<
 	ProductsGetTotalCountForChannelQuery,
 	ProductsGetTotalCountForChannelQueryVariables
+>;
+export const ProductsSlugsDocument = gql`
+	query ProductsSlugs($channel: String!) {
+		products(first: 100, channel: $channel) {
+			edges {
+				node {
+					slug
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useProductsSlugsQuery__
+ *
+ * To run a query within a React component, call `useProductsSlugsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsSlugsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsSlugsQuery({
+ *   variables: {
+ *      channel: // value for 'channel'
+ *   },
+ * });
+ */
+export function useProductsSlugsQuery(
+	baseOptions: Apollo.QueryHookOptions<
+		ProductsSlugsQuery,
+		ProductsSlugsQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useQuery<ProductsSlugsQuery, ProductsSlugsQueryVariables>(
+		ProductsSlugsDocument,
+		options,
+	);
+}
+export function useProductsSlugsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		ProductsSlugsQuery,
+		ProductsSlugsQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useLazyQuery<ProductsSlugsQuery, ProductsSlugsQueryVariables>(
+		ProductsSlugsDocument,
+		options,
+	);
+}
+export type ProductsSlugsQueryHookResult = ReturnType<
+	typeof useProductsSlugsQuery
+>;
+export type ProductsSlugsLazyQueryHookResult = ReturnType<
+	typeof useProductsSlugsLazyQuery
+>;
+export type ProductsSlugsQueryResult = Apollo.QueryResult<
+	ProductsSlugsQuery,
+	ProductsSlugsQueryVariables
 >;

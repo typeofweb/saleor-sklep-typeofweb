@@ -1,9 +1,29 @@
+fragment ProductListItem on Product {
+	id
+	name
+	slug
+	media {
+		url
+		alt
+	}
+	pricing {
+		onSale
+		priceRange {
+			start {
+				gross {
+					amount
+					currency
+				}
+			}
+		}
+	}
+}
+
 query ProductsGetForChannel($first: Int!, $channel: String!) {
 	products(first: $first, channel: $channel) {
 		edges {
 			node {
-				id
-				name
+				...ProductListItem
 			}
 		}
 	}

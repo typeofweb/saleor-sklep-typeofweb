@@ -5,8 +5,10 @@ const buildEslintCommand = (filenames) =>
 		.map((f) => path.relative(process.cwd(), f))
 		.join(' --file ')}`;
 
+const buildTscCommand = (filenames) => `tsc --noEmit -p tsconfig.json`;
+
 module.exports = {
-	'*.{ts,tsx}': 'yarn tsc --noEmit',
+	'*.{ts,tsx}': [buildTscCommand],
 	'*.{js,jsx,ts,tsx}': [buildEslintCommand],
 	'*.{js,jsx,ts,tsx,md,mdx,graphql,yml,yaml,css,scss,json}': [
 		'yarn prettier --write',

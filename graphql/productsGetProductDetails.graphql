@@ -1,0 +1,36 @@
+fragment ProductDetails on Product {
+	id
+	name
+	attributes {
+		attribute {
+			name
+		}
+		values {
+			id
+			name
+		}
+	}
+	slug
+	media {
+		url
+		alt
+	}
+	pricing {
+		onSale
+		priceRange {
+			start {
+				gross {
+					amount
+					currency
+				}
+			}
+		}
+	}
+	description
+}
+
+query GetProductDetails($slug: String!) {
+	product(slug: $slug) {
+		...ProductDetails
+	}
+}

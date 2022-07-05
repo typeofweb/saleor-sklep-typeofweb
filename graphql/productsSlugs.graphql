@@ -1,0 +1,9 @@
+query ProductsSlugs($channel: String!) {
+	products(first: 100, channel: $channel) {
+		edges {
+			node {
+				slug
+			}
+		}
+	}
+}
