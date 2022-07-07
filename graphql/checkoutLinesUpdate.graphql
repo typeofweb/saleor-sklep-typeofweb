@@ -1,0 +1,13 @@
+mutation CheckoutLinesUpdate(
+	$checkoutToken: UUID!
+	$lines: [CheckoutLineUpdateInput!]!
+) {
+	checkoutLinesUpdate(token: $checkoutToken, lines: $lines) {
+		checkout {
+			...CheckoutDetails
+		}
+		errors {
+			message
+		}
+	}
+}

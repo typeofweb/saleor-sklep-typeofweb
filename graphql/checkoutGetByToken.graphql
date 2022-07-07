@@ -8,6 +8,7 @@ fragment CheckoutLineDetails on CheckoutLine {
 		}
 	}
 	variant {
+		id
 		product {
 			id
 			name

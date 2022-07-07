@@ -20625,19 +20625,55 @@ export type CheckoutAddToCartMutation = {
 		readonly checkout?: {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
+			readonly email?: string | null;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
 				readonly quantity: number;
+				readonly totalPrice: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				};
 				readonly variant: {
 					readonly __typename?: 'ProductVariant';
+					readonly id: string;
 					readonly name: string;
 					readonly product: {
 						readonly __typename?: 'Product';
+						readonly id: string;
 						readonly name: string;
+						readonly slug: string;
+						readonly thumbnail?: {
+							readonly __typename?: 'Image';
+							readonly url: string;
+							readonly alt?: string | null;
+						} | null;
 					};
+					readonly pricing?: {
+						readonly __typename?: 'VariantPricingInfo';
+						readonly price?: {
+							readonly __typename?: 'TaxedMoney';
+							readonly gross: {
+								readonly __typename?: 'Money';
+								readonly amount: number;
+								readonly currency: string;
+							};
+						} | null;
+					} | null;
 				};
 			}>;
+			readonly totalPrice: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			};
 		} | null;
 		readonly errors: ReadonlyArray<{
 			readonly __typename?: 'CheckoutError';
@@ -20675,6 +20711,7 @@ export type CheckoutLineDetailsFragment = {
 	};
 	readonly variant: {
 		readonly __typename?: 'ProductVariant';
+		readonly id: string;
 		readonly name: string;
 		readonly product: {
 			readonly __typename?: 'Product';
@@ -20719,6 +20756,7 @@ export type CheckoutDetailsFragment = {
 		};
 		readonly variant: {
 			readonly __typename?: 'ProductVariant';
+			readonly id: string;
 			readonly name: string;
 			readonly product: {
 				readonly __typename?: 'Product';
@@ -20778,6 +20816,7 @@ export type CheckoutGetByTokenQuery = {
 			};
 			readonly variant: {
 				readonly __typename?: 'ProductVariant';
+				readonly id: string;
 				readonly name: string;
 				readonly product: {
 					readonly __typename?: 'Product';
@@ -20814,6 +20853,75 @@ export type CheckoutGetByTokenQuery = {
 	} | null;
 };
 
+export type CheckoutLinesUpdateMutationVariables = Exact<{
+	checkoutToken: Scalars['UUID'];
+	lines: ReadonlyArray<CheckoutLineUpdateInput> | CheckoutLineUpdateInput;
+}>;
+
+export type CheckoutLinesUpdateMutation = {
+	readonly __typename?: 'Mutation';
+	readonly checkoutLinesUpdate?: {
+		readonly __typename?: 'CheckoutLinesUpdate';
+		readonly checkout?: {
+			readonly __typename?: 'Checkout';
+			readonly id: string;
+			readonly email?: string | null;
+			readonly lines: ReadonlyArray<{
+				readonly __typename?: 'CheckoutLine';
+				readonly id: string;
+				readonly quantity: number;
+				readonly totalPrice: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				};
+				readonly variant: {
+					readonly __typename?: 'ProductVariant';
+					readonly id: string;
+					readonly name: string;
+					readonly product: {
+						readonly __typename?: 'Product';
+						readonly id: string;
+						readonly name: string;
+						readonly slug: string;
+						readonly thumbnail?: {
+							readonly __typename?: 'Image';
+							readonly url: string;
+							readonly alt?: string | null;
+						} | null;
+					};
+					readonly pricing?: {
+						readonly __typename?: 'VariantPricingInfo';
+						readonly price?: {
+							readonly __typename?: 'TaxedMoney';
+							readonly gross: {
+								readonly __typename?: 'Money';
+								readonly amount: number;
+								readonly currency: string;
+							};
+						} | null;
+					} | null;
+				};
+			}>;
+			readonly totalPrice: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			};
+		} | null;
+		readonly errors: ReadonlyArray<{
+			readonly __typename?: 'CheckoutError';
+			readonly message?: string | null;
+		}>;
+	} | null;
+};
+
 export type RemoveProductFromCheckoutMutationVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
 	lineId: Scalars['ID'];
@@ -20841,6 +20949,7 @@ export type RemoveProductFromCheckoutMutation = {
 				};
 				readonly variant: {
 					readonly __typename?: 'ProductVariant';
+					readonly id: string;
 					readonly name: string;
 					readonly product: {
 						readonly __typename?: 'Product';
@@ -21083,6 +21192,7 @@ export const CheckoutLineDetailsFragmentDoc = gql`
 			}
 		}
 		variant {
+			id
 			product {
 				id
 				name
@@ -21184,23 +21294,14 @@ export const CheckoutAddToCartDocument = gql`
 			lines: [{ quantity: 1, variantId: $variantId }]
 		) {
 			checkout {
-				id
-				lines {
-					id
-					quantity
-					variant {
-						name
-						product {
-							name
-						}
-					}
-				}
+				...CheckoutDetails
 			}
 			errors {
 				message
 			}
 		}
 	}
+	${CheckoutDetailsFragmentDoc}
 `;
 export type CheckoutAddToCartMutationFn = Apollo.MutationFunction<
 	CheckoutAddToCartMutation,
@@ -21357,6 +21458,66 @@ export type CheckoutGetByTokenLazyQueryHookResult = ReturnType<
 export type CheckoutGetByTokenQueryResult = Apollo.QueryResult<
 	CheckoutGetByTokenQuery,
 	CheckoutGetByTokenQueryVariables
+>;
+export const CheckoutLinesUpdateDocument = gql`
+	mutation CheckoutLinesUpdate(
+		$checkoutToken: UUID!
+		$lines: [CheckoutLineUpdateInput!]!
+	) {
+		checkoutLinesUpdate(token: $checkoutToken, lines: $lines) {
+			checkout {
+				...CheckoutDetails
+			}
+			errors {
+				message
+			}
+		}
+	}
+	${CheckoutDetailsFragmentDoc}
+`;
+export type CheckoutLinesUpdateMutationFn = Apollo.MutationFunction<
+	CheckoutLinesUpdateMutation,
+	CheckoutLinesUpdateMutationVariables
+>;
+
+/**
+ * __useCheckoutLinesUpdateMutation__
+ *
+ * To run a mutation, you first call `useCheckoutLinesUpdateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckoutLinesUpdateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkoutLinesUpdateMutation, { data, loading, error }] = useCheckoutLinesUpdateMutation({
+ *   variables: {
+ *      checkoutToken: // value for 'checkoutToken'
+ *      lines: // value for 'lines'
+ *   },
+ * });
+ */
+export function useCheckoutLinesUpdateMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		CheckoutLinesUpdateMutation,
+		CheckoutLinesUpdateMutationVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useMutation<
+		CheckoutLinesUpdateMutation,
+		CheckoutLinesUpdateMutationVariables
+	>(CheckoutLinesUpdateDocument, options);
+}
+export type CheckoutLinesUpdateMutationHookResult = ReturnType<
+	typeof useCheckoutLinesUpdateMutation
+>;
+export type CheckoutLinesUpdateMutationResult =
+	Apollo.MutationResult<CheckoutLinesUpdateMutation>;
+export type CheckoutLinesUpdateMutationOptions = Apollo.BaseMutationOptions<
+	CheckoutLinesUpdateMutation,
+	CheckoutLinesUpdateMutationVariables
 >;
 export const RemoveProductFromCheckoutDocument = gql`
 	mutation RemoveProductFromCheckout($checkoutToken: UUID!, $lineId: ID!) {

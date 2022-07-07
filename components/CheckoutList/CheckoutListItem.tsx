@@ -5,6 +5,7 @@ import {
 import Image from 'next/future/image';
 import { formatMoney } from '../../lib/format';
 import { useCheckout } from '../../lib/useCheckout';
+import { CheckoutListItemQuantityInput } from './CheckoutListItemQuantityInput';
 
 interface CheckoutListItemProps {
 	checkoutLine: CheckoutLineDetailsFragment;
@@ -59,19 +60,7 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 					</div>
 
 					<div className="mt-4 flex items-center sm:block sm:absolute sm:top-0 sm:left-1/2 sm:mt-0">
-						<label
-							htmlFor={`quantity-${checkoutLine.id}`}
-							className="sr-only"
-						>
-							Quantity, {checkoutLine.variant.name}
-						</label>
-						<input
-							id={`quantity-${checkoutLine.id}`}
-							name={`quantity-${checkoutLine.id}`}
-							value={checkoutLine.quantity}
-							readOnly
-							className="block max-w-full text-center rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-						/>
+						<CheckoutListItemQuantityInput checkoutLine={checkoutLine} />
 
 						<button
 							type="button"
