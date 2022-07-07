@@ -36,6 +36,7 @@ export type PageCheckoutGetByTokenComp = React.FC<{
 export const ssrCheckoutGetByToken = {
 	getServerPage: getServerPageCheckoutGetByToken,
 };
+
 export async function getServerPageProductsGetForChannel(
 	options: Omit<
 		Apollo.QueryOptions<Types.ProductsGetForChannelQueryVariables>,

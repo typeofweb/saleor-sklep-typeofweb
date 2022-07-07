@@ -20661,6 +20661,46 @@ export type CheckoutCreateForChannelMutation = {
 	} | null;
 };
 
+export type CheckoutLineDetailsFragment = {
+	readonly __typename?: 'CheckoutLine';
+	readonly id: string;
+	readonly quantity: number;
+	readonly totalPrice: {
+		readonly __typename?: 'TaxedMoney';
+		readonly gross: {
+			readonly __typename?: 'Money';
+			readonly amount: number;
+			readonly currency: string;
+		};
+	};
+	readonly variant: {
+		readonly __typename?: 'ProductVariant';
+		readonly name: string;
+		readonly product: {
+			readonly __typename?: 'Product';
+			readonly id: string;
+			readonly name: string;
+			readonly slug: string;
+			readonly thumbnail?: {
+				readonly __typename?: 'Image';
+				readonly url: string;
+				readonly alt?: string | null;
+			} | null;
+		};
+		readonly pricing?: {
+			readonly __typename?: 'VariantPricingInfo';
+			readonly price?: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			} | null;
+		} | null;
+	};
+};
+
 export type CheckoutDetailsFragment = {
 	readonly __typename?: 'Checkout';
 	readonly id: string;
@@ -20771,6 +20811,74 @@ export type CheckoutGetByTokenQuery = {
 				readonly currency: string;
 			};
 		};
+	} | null;
+};
+
+export type RemoveProductFromCheckoutMutationVariables = Exact<{
+	checkoutToken: Scalars['UUID'];
+	lineId: Scalars['ID'];
+}>;
+
+export type RemoveProductFromCheckoutMutation = {
+	readonly __typename?: 'Mutation';
+	readonly checkoutLineDelete?: {
+		readonly __typename?: 'CheckoutLineDelete';
+		readonly checkout?: {
+			readonly __typename?: 'Checkout';
+			readonly id: string;
+			readonly email?: string | null;
+			readonly lines: ReadonlyArray<{
+				readonly __typename?: 'CheckoutLine';
+				readonly id: string;
+				readonly quantity: number;
+				readonly totalPrice: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				};
+				readonly variant: {
+					readonly __typename?: 'ProductVariant';
+					readonly name: string;
+					readonly product: {
+						readonly __typename?: 'Product';
+						readonly id: string;
+						readonly name: string;
+						readonly slug: string;
+						readonly thumbnail?: {
+							readonly __typename?: 'Image';
+							readonly url: string;
+							readonly alt?: string | null;
+						} | null;
+					};
+					readonly pricing?: {
+						readonly __typename?: 'VariantPricingInfo';
+						readonly price?: {
+							readonly __typename?: 'TaxedMoney';
+							readonly gross: {
+								readonly __typename?: 'Money';
+								readonly amount: number;
+								readonly currency: string;
+							};
+						} | null;
+					} | null;
+				};
+			}>;
+			readonly totalPrice: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			};
+		} | null;
+		readonly errors: ReadonlyArray<{
+			readonly __typename?: 'CheckoutError';
+			readonly message?: string | null;
+		}>;
 	} | null;
 };
 
@@ -20964,39 +21072,44 @@ export type ProductsSlugsQuery = {
 	} | null;
 };
 
+export const CheckoutLineDetailsFragmentDoc = gql`
+	fragment CheckoutLineDetails on CheckoutLine {
+		id
+		quantity
+		totalPrice {
+			gross {
+				amount
+				currency
+			}
+		}
+		variant {
+			product {
+				id
+				name
+				slug
+				thumbnail {
+					url
+					alt
+				}
+			}
+			pricing {
+				price {
+					gross {
+						amount
+						currency
+					}
+				}
+			}
+			name
+		}
+	}
+`;
 export const CheckoutDetailsFragmentDoc = gql`
 	fragment CheckoutDetails on Checkout {
 		id
 		email
 		lines {
-			id
-			quantity
-			totalPrice {
-				gross {
-					amount
-					currency
-				}
-			}
-			variant {
-				product {
-					id
-					name
-					slug
-					thumbnail {
-						url
-						alt
-					}
-				}
-				pricing {
-					price {
-						gross {
-							amount
-							currency
-						}
-					}
-				}
-				name
-			}
+			...CheckoutLineDetails
 		}
 		totalPrice {
 			gross {
@@ -21005,6 +21118,7 @@ export const CheckoutDetailsFragmentDoc = gql`
 			}
 		}
 	}
+	${CheckoutLineDetailsFragmentDoc}
 `;
 export const ProductListItemFragmentDoc = gql`
 	fragment ProductListItem on Product {
@@ -21244,6 +21358,64 @@ export type CheckoutGetByTokenQueryResult = Apollo.QueryResult<
 	CheckoutGetByTokenQuery,
 	CheckoutGetByTokenQueryVariables
 >;
+export const RemoveProductFromCheckoutDocument = gql`
+	mutation RemoveProductFromCheckout($checkoutToken: UUID!, $lineId: ID!) {
+		checkoutLineDelete(token: $checkoutToken, lineId: $lineId) {
+			checkout {
+				...CheckoutDetails
+			}
+			errors {
+				message
+			}
+		}
+	}
+	${CheckoutDetailsFragmentDoc}
+`;
+export type RemoveProductFromCheckoutMutationFn = Apollo.MutationFunction<
+	RemoveProductFromCheckoutMutation,
+	RemoveProductFromCheckoutMutationVariables
+>;
+
+/**
+ * __useRemoveProductFromCheckoutMutation__
+ *
+ * To run a mutation, you first call `useRemoveProductFromCheckoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveProductFromCheckoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeProductFromCheckoutMutation, { data, loading, error }] = useRemoveProductFromCheckoutMutation({
+ *   variables: {
+ *      checkoutToken: // value for 'checkoutToken'
+ *      lineId: // value for 'lineId'
+ *   },
+ * });
+ */
+export function useRemoveProductFromCheckoutMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		RemoveProductFromCheckoutMutation,
+		RemoveProductFromCheckoutMutationVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useMutation<
+		RemoveProductFromCheckoutMutation,
+		RemoveProductFromCheckoutMutationVariables
+	>(RemoveProductFromCheckoutDocument, options);
+}
+export type RemoveProductFromCheckoutMutationHookResult = ReturnType<
+	typeof useRemoveProductFromCheckoutMutation
+>;
+export type RemoveProductFromCheckoutMutationResult =
+	Apollo.MutationResult<RemoveProductFromCheckoutMutation>;
+export type RemoveProductFromCheckoutMutationOptions =
+	Apollo.BaseMutationOptions<
+		RemoveProductFromCheckoutMutation,
+		RemoveProductFromCheckoutMutationVariables
+	>;
 export const ProductsGetForChannelDocument = gql`
 	query ProductsGetForChannel($first: Int!, $channel: String!) {
 		products(first: $first, channel: $channel) {

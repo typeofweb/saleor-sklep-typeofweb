@@ -6,7 +6,7 @@ import { ApolloProvider } from '@apollo/client';
 
 import { getApolloClient } from '../lib/apolloClient';
 import { useRef } from 'react';
-import { Layout } from '../components/Layout';
+import { Layout } from '../components/Layout/Layout';
 import { CheckoutProvider } from '../components/CheckoutProvider';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
