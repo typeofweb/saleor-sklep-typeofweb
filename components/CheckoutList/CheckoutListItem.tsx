@@ -64,7 +64,7 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 
 						<button
 							type="button"
-							className="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:ml-0 sm:mt-3"
+							className="ml-4 text-sm font-medium text-green-600 hover:text-green-500 sm:ml-0 sm:mt-3"
 							onClick={handleRemove}
 						>
 							Remove

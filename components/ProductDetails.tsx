@@ -1,14 +1,11 @@
 import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
 import { classNames } from '../lib/utils';
-import {
-	ProductDetailsFragment,
-	useCheckoutAddToCartMutation,
-} from '../generated/graphql';
+import { ProductDetailsFragment } from '../generated/graphql';
 import Image from 'next/future/image';
 import { formatMoney } from '../lib/format';
-import { useCheckout } from '../lib/useCheckout';
 import { useRouter } from 'next/router';
+import { AddProductToCartButton } from './AddProductToCartButton';
 
 interface ProductDetailsProps {
 	product: Omit<ProductDetailsFragment, 'description'> & {
@@ -17,30 +14,9 @@ interface ProductDetailsProps {
 }
 
 export function ProductDetails({ product }: ProductDetailsProps) {
-	const [addToCart] = useCheckoutAddToCartMutation();
-	const { token } = useCheckout();
 	const router = useRouter();
 
-	const handleBuy = async () => {
-		if (!token || !product.defaultVariant?.id) {
-			return;
-		}
-
-		const result = await addToCart({
-			variables: { checkoutToken: token, variantId: product.defaultVariant.id },
-		});
-
-		if (result.errors?.length) {
-			// @todo display this somehow
-			console.warn(result.errors);
-			return;
-		}
-		if (result.data?.checkoutLinesAdd?.errors?.length) {
-			// @todo display this somehow
-			console.warn(result.data?.checkoutLinesAdd?.errors);
-			return;
-		}
-
+	const afterBuy = async () => {
 		router.push('/bag');
 	};
 
@@ -86,19 +62,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 						)}
 
 						<div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-							<button
-								type="button"
-								className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
-								onClick={handleBuy}
+							<AddProductToCartButton
+								onClick={afterBuy}
+								variantId={product.defaultVariant?.id}
 							>
-								Pay
+								Add to cart
 								{/* @todo: pricing is null here, why? */}
 								{product.pricing?.priceRange?.start?.gross &&
 									formatMoney(
 										product.pricing.priceRange.start.gross.amount,
 										product.pricing.priceRange.start.gross.currency,
 									)}
-							</button>
+							</AddProductToCartButton>
 						</div>
 
 						<div className="border-t border-gray-200 mt-10 pt-10">
@@ -176,7 +151,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 										className={({ selected }) =>
 											classNames(
 												selected
-													? 'border-indigo-600 text-indigo-600'
+													? 'border-green-600 text-green-600'
 													: 'border-transparent text-gray-700 hover:text-gray-800 hover:border-gray-300',
 												'whitespace-nowrap py-6 border-b-2 font-medium text-sm',
 											)

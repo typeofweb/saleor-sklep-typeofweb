@@ -6,6 +6,9 @@ fragment ProductListItem on Product {
 		url
 		alt
 	}
+	defaultVariant {
+		id
+	}
 	pricing {
 		onSale
 		priceRange {

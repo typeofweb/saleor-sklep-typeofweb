@@ -28,7 +28,7 @@ export const useCheckout = () => {
 				channel: 'pl',
 			},
 		}).then((res) => {
-			const responseToken = res.data?.checkoutCreate?.checkout?.token;
+			const responseToken = res.data?.checkoutCreate?.checkout?.id;
 
 			if (typeof responseToken === 'string') {
 				setToken(responseToken);

@@ -20692,7 +20692,56 @@ export type CheckoutCreateForChannelMutation = {
 		readonly __typename?: 'CheckoutCreate';
 		readonly checkout?: {
 			readonly __typename?: 'Checkout';
-			readonly token: any;
+			readonly id: string;
+			readonly email?: string | null;
+			readonly lines: ReadonlyArray<{
+				readonly __typename?: 'CheckoutLine';
+				readonly id: string;
+				readonly quantity: number;
+				readonly totalPrice: {
+					readonly __typename?: 'TaxedMoney';
+					readonly gross: {
+						readonly __typename?: 'Money';
+						readonly amount: number;
+						readonly currency: string;
+					};
+				};
+				readonly variant: {
+					readonly __typename?: 'ProductVariant';
+					readonly id: string;
+					readonly name: string;
+					readonly product: {
+						readonly __typename?: 'Product';
+						readonly id: string;
+						readonly name: string;
+						readonly slug: string;
+						readonly thumbnail?: {
+							readonly __typename?: 'Image';
+							readonly url: string;
+							readonly alt?: string | null;
+						} | null;
+					};
+					readonly pricing?: {
+						readonly __typename?: 'VariantPricingInfo';
+						readonly price?: {
+							readonly __typename?: 'TaxedMoney';
+							readonly gross: {
+								readonly __typename?: 'Money';
+								readonly amount: number;
+								readonly currency: string;
+							};
+						} | null;
+					} | null;
+				};
+			}>;
+			readonly totalPrice: {
+				readonly __typename?: 'TaxedMoney';
+				readonly gross: {
+					readonly __typename?: 'Money';
+					readonly amount: number;
+					readonly currency: string;
+				};
+			};
 		} | null;
 	} | null;
 };
@@ -21001,6 +21050,10 @@ export type ProductListItemFragment = {
 		readonly url: string;
 		readonly alt: string;
 	}> | null;
+	readonly defaultVariant?: {
+		readonly __typename?: 'ProductVariant';
+		readonly id: string;
+	} | null;
 	readonly pricing?: {
 		readonly __typename?: 'ProductPricingInfo';
 		readonly onSale?: boolean | null;
@@ -21039,6 +21092,10 @@ export type ProductsGetForChannelQuery = {
 					readonly url: string;
 					readonly alt: string;
 				}> | null;
+				readonly defaultVariant?: {
+					readonly __typename?: 'ProductVariant';
+					readonly id: string;
+				} | null;
 				readonly pricing?: {
 					readonly __typename?: 'ProductPricingInfo';
 					readonly onSale?: boolean | null;
@@ -21239,6 +21296,9 @@ export const ProductListItemFragmentDoc = gql`
 			url
 			alt
 		}
+		defaultVariant {
+			id
+		}
 		pricing {
 			onSale
 			priceRange {
@@ -21351,10 +21411,11 @@ export const CheckoutCreateForChannelDocument = gql`
 	mutation CheckoutCreateForChannel($channel: String!) {
 		checkoutCreate(input: { channel: $channel, lines: [] }) {
 			checkout {
-				token
+				...CheckoutDetails
 			}
 		}
 	}
+	${CheckoutDetailsFragmentDoc}
 `;
 export type CheckoutCreateForChannelMutationFn = Apollo.MutationFunction<
 	CheckoutCreateForChannelMutation,
