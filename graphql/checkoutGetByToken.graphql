@@ -32,6 +32,7 @@ fragment CheckoutLineDetails on CheckoutLine {
 fragment CheckoutDetails on Checkout {
 	id
 	email
+	token
 	lines {
 		...CheckoutLineDetails
 	}

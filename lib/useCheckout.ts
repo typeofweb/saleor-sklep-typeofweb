@@ -1,10 +1,19 @@
 import * as ls from './localStorage';
 import { useState, useEffect } from 'react';
-import { useCheckoutCreateForChannelMutation } from '../generated/graphql';
+import {
+	useCheckoutCreateForChannelMutation,
+	useCheckoutGetByTokenQuery,
+} from '../generated/graphql';
 
 export const useCheckout = () => {
 	const [token, setToken] = useState<string | null>(null);
 	const [createCheckout] = useCheckoutCreateForChannelMutation();
+	const checkoutByToken = useCheckoutGetByTokenQuery({
+		skip: !token,
+		variables: {
+			checkoutToken: token,
+		},
+	});
 
 	useEffect(() => {
 		if (token) {
@@ -14,6 +23,18 @@ export const useCheckout = () => {
 
 	useEffect(() => {
 		if (token) {
+			// handle invalid / expired / checked-out
+			if (checkoutByToken.loading) {
+				return;
+			}
+			if (checkoutByToken.error) {
+				console.error(checkoutByToken.error);
+				return;
+			}
+			if (!checkoutByToken.data) {
+				ls.setItem('TOKEN', '');
+				setToken(null);
+			}
 			return;
 		}
 		const savedToken = ls.getItem('TOKEN');
@@ -28,13 +49,19 @@ export const useCheckout = () => {
 				channel: 'pl',
 			},
 		}).then((res) => {
-			const responseToken = res.data?.checkoutCreate?.checkout?.id;
+			const responseToken = res.data?.checkoutCreate?.checkout?.token;
 
 			if (typeof responseToken === 'string') {
 				setToken(responseToken);
 			}
 		});
-	}, [createCheckout, token]);
+	}, [
+		checkoutByToken.data,
+		checkoutByToken.error,
+		checkoutByToken.loading,
+		createCheckout,
+		token,
+	]);
 
 	return { token };
 };

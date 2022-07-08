@@ -20626,6 +20626,7 @@ export type CheckoutAddToCartMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
+			readonly token: any;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -20694,6 +20695,7 @@ export type CheckoutCreateForChannelMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
+			readonly token: any;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -20791,6 +20793,7 @@ export type CheckoutDetailsFragment = {
 	readonly __typename?: 'Checkout';
 	readonly id: string;
 	readonly email?: string | null;
+	readonly token: any;
 	readonly lines: ReadonlyArray<{
 		readonly __typename?: 'CheckoutLine';
 		readonly id: string;
@@ -20851,6 +20854,7 @@ export type CheckoutGetByTokenQuery = {
 		readonly __typename?: 'Checkout';
 		readonly id: string;
 		readonly email?: string | null;
+		readonly token: any;
 		readonly lines: ReadonlyArray<{
 			readonly __typename?: 'CheckoutLine';
 			readonly id: string;
@@ -20915,6 +20919,7 @@ export type CheckoutLinesUpdateMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
+			readonly token: any;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -20984,6 +20989,7 @@ export type RemoveProductFromCheckoutMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
+			readonly token: any;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -21275,6 +21281,7 @@ export const CheckoutDetailsFragmentDoc = gql`
 	fragment CheckoutDetails on Checkout {
 		id
 		email
+		token
 		lines {
 			...CheckoutLineDetails
 		}
