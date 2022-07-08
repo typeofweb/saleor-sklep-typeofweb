@@ -6,6 +6,9 @@ import { CheckoutListItem } from './CheckoutListItem';
 interface CheckoutListNotEmptyProps {
 	checkout: CheckoutDetailsFragment;
 }
+
+const checkoutUrl = process.env['NEXT_PUBLIC_CHECKOUT_URL']!;
+
 export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
 	return (
 		<form className="mt-12">
@@ -65,12 +68,12 @@ export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
 					</div>
 				</div>
 				<div className="mt-10">
-					<button
-						type="submit"
-						className="w-full bg-green-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-green-500"
+					<a
+						className="block w-full bg-green-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-green-500"
+						href={`${checkoutUrl}?checkout=${checkout.id}`}
 					>
 						Checkout
-					</button>
+					</a>
 				</div>
 
 				<div className="mt-6 text-sm text-center text-gray-500">
