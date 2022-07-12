@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useCheckoutAddToCartMutation } from '../generated/graphql';
-import { useCheckout } from '../lib/useCheckout';
+import { useCheckout } from './CheckoutProvider';
 
 interface AddProductToCartButtonProps {
 	onClick?: () => void;

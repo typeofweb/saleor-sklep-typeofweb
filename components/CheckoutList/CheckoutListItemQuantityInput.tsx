@@ -3,9 +3,9 @@ import {
 	CheckoutLineDetailsFragment,
 	useCheckoutLinesUpdateMutation,
 } from '../../generated/graphql';
-import { useCheckout } from '../../lib/useCheckout';
 import { useDebouncedCallback } from '../../lib/useDebouncedCallback';
 import { useEvent } from '../../lib/useEvent';
+import { useCheckout } from '../CheckoutProvider';
 
 interface CheckoutListItemQuantityInputProps {
 	checkoutLine: CheckoutLineDetailsFragment;

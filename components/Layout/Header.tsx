@@ -2,8 +2,8 @@ import { ChangeEventHandler, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MenuIcon, ShoppingCartIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
-import { useCheckout } from '../../lib/useCheckout';
 import { useAllPagesContext } from '../AllPagesContext';
+import { useCheckout } from '../CheckoutProvider';
 
 export const Header = () => {
 	const [open, setOpen] = useState(false);
@@ -151,7 +151,7 @@ export const Header = () => {
 					<div className="bg-gray-900">
 						<div className="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8">
 							{/* Currency selector */}
-							<form className="hidden lg:block lg:flex-1">
+							<form className="hidden md:block md:flex-1">
 								<div className="flex">
 									<label
 										htmlFor="desktop-currency"
@@ -242,7 +242,7 @@ export const Header = () => {
 									</div>
 
 									{/* Mobile menu and search (lg-) */}
-									<div className="flex-1 flex items-center lg:hidden">
+									<div className="flex-1 flex items-center md:hidden">
 										<button
 											type="button"
 											className="-ml-2 bg-white p-2 rounded-md text-gray-400"

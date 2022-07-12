@@ -4,8 +4,8 @@ import {
 } from '../../generated/graphql';
 import Image from 'next/future/image';
 import { formatMoney } from '../../lib/format';
-import { useCheckout } from '../../lib/useCheckout';
 import { CheckoutListItemQuantityInput } from './CheckoutListItemQuantityInput';
+import { useCheckout } from '../CheckoutProvider';
 
 interface CheckoutListItemProps {
 	checkoutLine: CheckoutLineDetailsFragment;

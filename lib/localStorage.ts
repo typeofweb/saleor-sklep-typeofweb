@@ -6,7 +6,9 @@ export const getItem = (name: string): JSONValue | null => {
 		return item ? JSON.parse(item) : null;
 	} catch (err) {
 		console.error(err);
-		localStorage.removeItem(name);
+		try {
+			localStorage.removeItem(name);
+		} catch {}
 		return null;
 	}
 };
@@ -16,6 +18,8 @@ export const setItem = (name: string, value: JSONValue | null) => {
 		localStorage.setItem(name, JSON.stringify(value));
 	} catch (err) {
 		console.error(err);
-		localStorage.removeItem(name);
+		try {
+			localStorage.removeItem(name);
+		} catch {}
 	}
 };

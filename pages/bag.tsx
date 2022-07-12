@@ -1,6 +1,6 @@
 import { CheckoutList } from '../components/CheckoutList/CheckoutList';
+import { useCheckout } from '../components/CheckoutProvider';
 import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
-import { useCheckout } from '../lib/useCheckout';
 
 const BagPage = () => {
 	const { checkoutByToken } = useCheckout();

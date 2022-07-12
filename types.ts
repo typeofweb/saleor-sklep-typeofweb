@@ -5,6 +5,7 @@ export type InferGetStaticPathsType<T> = T extends () => Promise<{
 	: never;
 
 export type JSONValue =
+	| null
 	| string
 	| number
 	| boolean
