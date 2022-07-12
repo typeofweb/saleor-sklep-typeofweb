@@ -98,6 +98,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 				return;
 			}
 			if (checkoutByTokenResponse.loading) {
+				checkoutByTokenResponse.refetch({
+					checkoutToken: tokensForCurrency?.[selectedCurrency],
+				});
 				setState('loading-checkout-from-graphql');
 				return;
 			}
