@@ -1,16 +1,9 @@
 import { CheckoutList } from '../components/CheckoutList/CheckoutList';
-import { useCheckoutGetByTokenQuery } from '../generated/graphql';
+import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
 import { useCheckout } from '../lib/useCheckout';
 
 const BagPage = () => {
-	const { token } = useCheckout();
-
-	const checkoutByToken = useCheckoutGetByTokenQuery({
-		skip: !token,
-		variables: {
-			checkoutToken: token,
-		},
-	});
+	const { checkoutByToken } = useCheckout();
 
 	if (checkoutByToken.loading) {
 		return <div />;
@@ -20,3 +13,13 @@ const BagPage = () => {
 };
 
 export default BagPage;
+
+export const getStaticProps = async () => {
+	const pagesCtx = await getServerAllPagesCtx();
+	return {
+		props: {
+			pagesCtx,
+		},
+		revalidate: 60,
+	};
+};

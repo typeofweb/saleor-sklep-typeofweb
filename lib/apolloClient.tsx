@@ -22,6 +22,7 @@ export const getApolloClient = (
 	});
 
 	return new ApolloClient({
+		connectToDevTools: !isServer,
 		link: httpLink,
 		cache: new InMemoryCache().restore(initialState || {}),
 		ssrMode: typeof window === 'undefined',

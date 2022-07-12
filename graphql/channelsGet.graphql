@@ -1,0 +1,8 @@
+query ChannelsGet {
+	channels {
+		slug
+		currencyCode
+		isActive
+		id
+	}
+}

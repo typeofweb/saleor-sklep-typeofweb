@@ -4,6 +4,34 @@ import * as Operations from './graphql';
 import * as Apollo from '@apollo/client';
 import type React from 'react';
 import { getApolloClient } from '../lib/apolloClient';
+export async function getServerPageChannelsGet(
+	options: Omit<Apollo.QueryOptions<Types.ChannelsGetQueryVariables>, 'query'>,
+	ctx?: any,
+) {
+	const apolloClient = getApolloClient(ctx);
+
+	const data = await apolloClient.query<Types.ChannelsGetQuery>({
+		...options,
+		query: Operations.ChannelsGetDocument,
+	});
+
+	const apolloState = apolloClient.cache.extract();
+
+	return {
+		props: {
+			apolloState: apolloState,
+			data: data?.data,
+			error: data?.error ?? data?.errors ?? null,
+		},
+	};
+}
+export type PageChannelsGetComp = React.FC<{
+	data?: Types.ChannelsGetQuery;
+	error?: Apollo.ApolloError;
+}>;
+export const ssrChannelsGet = {
+	getServerPage: getServerPageChannelsGet,
+};
 
 export async function getServerPageCheckoutGetByToken(
 	options: Omit<

@@ -1,6 +1,6 @@
 import { JSONValue } from '../types';
 
-export const getItem = (name: string) => {
+export const getItem = (name: string): JSONValue | null => {
 	try {
 		const item = localStorage.getItem(name);
 		return item ? JSON.parse(item) : null;
@@ -11,8 +11,7 @@ export const getItem = (name: string) => {
 	}
 };
 
-// @todo replace any
-export const setItem = (name: string, value: JSONValue) => {
+export const setItem = (name: string, value: JSONValue | null) => {
 	try {
 		localStorage.setItem(name, JSON.stringify(value));
 	} catch (err) {

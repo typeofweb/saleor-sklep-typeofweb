@@ -2,23 +2,40 @@ import '../styles/globals.css';
 
 import type { AppProps } from 'next/app';
 
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, NormalizedCacheObject } from '@apollo/client';
 
 import { getApolloClient } from '../lib/apolloClient';
-import { useRef } from 'react';
+import { useState } from 'react';
 import { Layout } from '../components/Layout/Layout';
 import { CheckoutProvider } from '../components/CheckoutProvider';
+import { AllPagesContextProvider } from '../components/AllPagesContext';
+import { GetServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
+import { invariant } from '@apollo/client/utilities/globals';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
-	const apolloClient = useRef(getApolloClient());
+type MyAppProps = Omit<AppProps, 'pageProps'> & {
+	pageProps: {
+		apolloState?: NormalizedCacheObject;
+		pagesCtx?: GetServerAllPagesCtx;
+		[x: string]: unknown;
+	};
+};
+export default function MyApp({
+	Component,
+	pageProps: { pagesCtx, apolloState, ...pageProps },
+}: MyAppProps) {
+	const [apolloClient] = useState(() => getApolloClient({}, apolloState));
+
+	invariant(pagesCtx, `Missing pagesCtx!`);
 
 	return (
-		<ApolloProvider client={apolloClient.current!}>
-			<CheckoutProvider>
-				<Layout>
-					<Component {...pageProps} />
-				</Layout>
-			</CheckoutProvider>
-		</ApolloProvider>
+		<AllPagesContextProvider allPagesCtx={pagesCtx}>
+			<ApolloProvider client={apolloClient}>
+				<CheckoutProvider>
+					<Layout>
+						<Component {...pageProps} />
+					</Layout>
+				</CheckoutProvider>
+			</ApolloProvider>
+		</AllPagesContextProvider>
 	);
 }

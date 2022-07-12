@@ -4,6 +4,7 @@ import {
 	getServerPageGetProductDetails,
 	getServerPageProductsSlugs,
 } from '../generated/page';
+import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
 import { parseEditorJsToHtml } from '../lib/parseEditorJs';
 import { InferGetStaticPathsType } from '../types';
 
@@ -42,16 +43,17 @@ export const getStaticProps = async ({
 	if (!params) {
 		return { props: {}, notFound: true };
 	}
-	const res = await getServerPageGetProductDetails({
+	const productDetailsRes = await getServerPageGetProductDetails({
 		variables: {
 			slug: params.productSlug,
 		},
 	});
+	const { product } = productDetailsRes.props.data;
 
-	const { product } = res.props.data;
+	const pagesCtx = await getServerAllPagesCtx();
 
 	if (!product) {
-		return { props: {}, notFound: true };
+		return { props: { pagesCtx }, notFound: true };
 	}
 
 	const productWithParsedDescription = {
@@ -62,6 +64,6 @@ export const getStaticProps = async ({
 	};
 
 	return {
-		props: { product: productWithParsedDescription },
+		props: { product: productWithParsedDescription, pagesCtx },
 	};
 };

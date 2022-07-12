@@ -1,28 +1,55 @@
 import * as ls from './localStorage';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
 	useCheckoutCreateForChannelMutation,
 	useCheckoutGetByTokenQuery,
 } from '../generated/graphql';
+import { useAllPagesContext } from '../components/AllPagesContext';
+import { JSONValue } from '../types';
+
+type TokenInLs = Record<string, string | null> | null;
+
+const lsGetToken = () => ls.getItem('TOKEN') as TokenInLs;
+const lsSetToken = (token: TokenInLs) =>
+	ls.setItem('TOKEN', token as JSONValue);
 
 export const useCheckout = () => {
-	const [token, setToken] = useState<string | null>(null);
-	const [createCheckout] = useCheckoutCreateForChannelMutation();
-	const checkoutByToken = useCheckoutGetByTokenQuery({
-		skip: !token,
-		variables: {
-			checkoutToken: token,
+	const [tokenForCurrency, setTokenForCurrency] = useState<TokenInLs>(null);
+
+	const updateTokenForCurrency = useCallback(
+		(currency: string, token: string | null) => {
+			setTokenForCurrency({
+				...(tokenForCurrency || {}),
+				[currency]: token,
+			});
 		},
+		[tokenForCurrency],
+	);
+
+	const [createCheckout] = useCheckoutCreateForChannelMutation();
+	const {
+		userCurrency: { selectedCurrency },
+	} = useAllPagesContext();
+
+	const checkoutByToken = useCheckoutGetByTokenQuery({
+		skip: !tokenForCurrency?.[selectedCurrency],
+		variables: {
+			checkoutToken: tokenForCurrency?.[selectedCurrency],
+		},
+		fetchPolicy: 'no-cache',
 	});
 
-	useEffect(() => {
-		if (token) {
-			ls.setItem('TOKEN', token);
-		}
-	}, [token]);
+	// @todo there's a bug somewhere and tokens get deleted
+	console.log(checkoutByToken.data?.checkout);
 
 	useEffect(() => {
-		if (token) {
+		if (tokenForCurrency) {
+			lsSetToken(tokenForCurrency);
+		}
+	}, [tokenForCurrency]);
+
+	useEffect(() => {
+		if (tokenForCurrency?.[selectedCurrency]) {
 			// handle invalid / expired / checked-out
 			if (checkoutByToken.loading) {
 				return;
@@ -31,37 +58,45 @@ export const useCheckout = () => {
 				console.error(checkoutByToken.error);
 				return;
 			}
-			if (!checkoutByToken.data) {
-				ls.setItem('TOKEN', '');
-				setToken(null);
+			if (!checkoutByToken.data?.checkout) {
+				const existingLs = lsGetToken() || {};
+				const newLs = Object.fromEntries(
+					Object.entries(existingLs).filter(
+						([, v]) => v === tokenForCurrency[selectedCurrency],
+					),
+				);
+				lsSetToken(newLs);
+				updateTokenForCurrency(selectedCurrency, null);
 			}
 			return;
 		}
-		const savedToken = ls.getItem('TOKEN');
+		const savedToken = lsGetToken()?.[selectedCurrency];
 
 		if (savedToken) {
-			setToken(savedToken);
+			updateTokenForCurrency(selectedCurrency, savedToken);
 			return;
 		}
 
 		createCheckout({
 			variables: {
-				channel: 'pl',
+				channel: selectedCurrency,
 			},
 		}).then((res) => {
 			const responseToken = res.data?.checkoutCreate?.checkout?.token;
 
 			if (typeof responseToken === 'string') {
-				setToken(responseToken);
+				updateTokenForCurrency(selectedCurrency, responseToken);
 			}
 		});
 	}, [
-		checkoutByToken.data,
+		checkoutByToken.data?.checkout,
 		checkoutByToken.error,
 		checkoutByToken.loading,
 		createCheckout,
-		token,
+		selectedCurrency,
+		tokenForCurrency,
+		updateTokenForCurrency,
 	]);
 
-	return { token };
+	return { token: tokenForCurrency?.[selectedCurrency], checkoutByToken };
 };

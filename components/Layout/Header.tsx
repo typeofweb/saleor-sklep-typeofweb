@@ -1,15 +1,13 @@
-import { Fragment, useState } from 'react';
+import { ChangeEventHandler, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MenuIcon, ShoppingCartIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
-import { useCheckoutGetByTokenQuery } from '../../generated/graphql';
 import { useCheckout } from '../../lib/useCheckout';
+import { useAllPagesContext } from '../AllPagesContext';
 
 export const Header = () => {
 	const [open, setOpen] = useState(false);
 
-	// @todo fetch these
-	const currencies = ['PLN', 'EUR'];
 	// @todo fetch these
 	const navigation = {
 		pages: [
@@ -18,14 +16,15 @@ export const Header = () => {
 		],
 	};
 
-	const { token } = useCheckout();
+	const { checkoutByToken } = useCheckout();
 
-	const checkoutByToken = useCheckoutGetByTokenQuery({
-		skip: !token,
-		variables: {
-			checkoutToken: token,
-		},
-	});
+	const {
+		userCurrency: { setSelectedCurrency, selectedCurrency, currencies },
+	} = useAllPagesContext();
+
+	const handleCurrencyChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+		setSelectedCurrency(e.currentTarget.value);
+	};
 
 	return (
 		<>
@@ -107,9 +106,16 @@ export const Header = () => {
 													id="mobile-currency"
 													name="currency"
 													className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
+													value={selectedCurrency}
+													onChange={handleCurrencyChange}
 												>
 													{currencies.map((currency) => (
-														<option key={currency}>{currency}</option>
+														<option
+															key={currency.id}
+															value={currency.slug}
+														>
+															{currency.currencyCode}
+														</option>
 													))}
 												</select>
 												<div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
@@ -158,9 +164,16 @@ export const Header = () => {
 											id="desktop-currency"
 											name="currency"
 											className="bg-none bg-gray-900 border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-white group-hover:text-gray-100 focus:outline-none focus:ring-0 focus:border-transparent"
+											value={selectedCurrency}
+											onChange={handleCurrencyChange}
 										>
 											{currencies.map((currency) => (
-												<option key={currency}>{currency}</option>
+												<option
+													key={currency.id}
+													value={currency.slug}
+												>
+													{currency.currencyCode}
+												</option>
 											))}
 										</select>
 										<div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
@@ -266,7 +279,7 @@ export const Header = () => {
 															className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
 															aria-hidden="true"
 														/>
-														<span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+														<span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800 tabular-nums">
 															{checkoutByToken.data?.checkout?.lines.reduce(
 																(acc, line) => acc + line.quantity,
 																0,

@@ -20613,6 +20613,19 @@ export type _Service = {
 	readonly sdl?: Maybe<Scalars['String']>;
 };
 
+export type ChannelsGetQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ChannelsGetQuery = {
+	readonly __typename?: 'Query';
+	readonly channels?: ReadonlyArray<{
+		readonly __typename?: 'Channel';
+		readonly slug: string;
+		readonly currencyCode: string;
+		readonly isActive: boolean;
+		readonly id: string;
+	}> | null;
+};
+
 export type CheckoutAddToCartMutationVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
 	variantId: Scalars['ID'];
@@ -21354,6 +21367,64 @@ export const ProductDetailsFragmentDoc = gql`
 		description
 	}
 `;
+export const ChannelsGetDocument = gql`
+	query ChannelsGet {
+		channels {
+			slug
+			currencyCode
+			isActive
+			id
+		}
+	}
+`;
+
+/**
+ * __useChannelsGetQuery__
+ *
+ * To run a query within a React component, call `useChannelsGetQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChannelsGetQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChannelsGetQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useChannelsGetQuery(
+	baseOptions?: Apollo.QueryHookOptions<
+		ChannelsGetQuery,
+		ChannelsGetQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useQuery<ChannelsGetQuery, ChannelsGetQueryVariables>(
+		ChannelsGetDocument,
+		options,
+	);
+}
+export function useChannelsGetLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		ChannelsGetQuery,
+		ChannelsGetQueryVariables
+	>,
+) {
+	const options = { ...defaultOptions, ...baseOptions };
+	return Apollo.useLazyQuery<ChannelsGetQuery, ChannelsGetQueryVariables>(
+		ChannelsGetDocument,
+		options,
+	);
+}
+export type ChannelsGetQueryHookResult = ReturnType<typeof useChannelsGetQuery>;
+export type ChannelsGetLazyQueryHookResult = ReturnType<
+	typeof useChannelsGetLazyQuery
+>;
+export type ChannelsGetQueryResult = Apollo.QueryResult<
+	ChannelsGetQuery,
+	ChannelsGetQueryVariables
+>;
 export const CheckoutAddToCartDocument = gql`
 	mutation CheckoutAddToCart($checkoutToken: UUID!, $variantId: ID!) {
 		checkoutLinesAdd(
