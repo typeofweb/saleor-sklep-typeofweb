@@ -1,15 +1,21 @@
+import { invariant } from '@apollo/client/utilities/globals';
 import Link from 'next/link';
-import { CheckoutDetailsFragment } from '../../generated/graphql';
+
 import { formatMoney } from '../../lib/format';
+
 import { CheckoutListItem } from './CheckoutListItem';
+
+import type { CheckoutDetailsFragment } from '../../generated/graphql';
 
 interface CheckoutListNotEmptyProps {
 	checkout: CheckoutDetailsFragment;
 }
 
-const checkoutUrl = process.env['NEXT_PUBLIC_CHECKOUT_URL']!;
+const checkoutUrl = process.env['NEXT_PUBLIC_CHECKOUT_URL'];
 
 export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
+	invariant(checkoutUrl, `Missing NEXT_PUBLIC_CHECKOUT_URL!`);
+
 	return (
 		<form className="mt-12">
 			<div>

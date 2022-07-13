@@ -1,15 +1,16 @@
-import useCookie from 'react-use-cookie';
 import { invariant } from '@apollo/client/utilities/globals';
 import {
 	createContext,
-	ReactNode,
 	useCallback,
 	useContext,
 	useEffect,
 	useMemo,
 } from 'react';
-import { GetServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
-import { ChannelDetailsFragment } from '../generated/graphql';
+import useCookie from 'react-use-cookie';
+
+import type { ChannelDetailsFragment } from '../generated/graphql';
+import type { GetServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
+import type { ReactNode } from 'react';
 
 interface AllPagesContextValue {
 	allPagesCtx: GetServerAllPagesCtx;
@@ -69,6 +70,7 @@ export const AllPagesContextProvider = ({
 			userChannel: {
 				channels,
 				defaultChannel,
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- it has to be true
 				selectedChannel: channels.find((c) => c.slug === cookieChannelSlug)!,
 				setSelectedChannelSlug,
 			},

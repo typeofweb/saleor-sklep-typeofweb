@@ -9,5 +9,5 @@ export type JSONValue =
 	| string
 	| number
 	| boolean
-	| { [x: string]: JSONValue }
+	| { [x: string]: JSONValue | undefined }
 	| Array<JSONValue>;

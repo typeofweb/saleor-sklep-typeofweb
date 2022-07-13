@@ -1,11 +1,12 @@
-import {
-	CheckoutLineDetailsFragment,
-	useRemoveProductFromCheckoutMutation,
-} from '../../generated/graphql';
 import Image from 'next/future/image';
+
+import { useRemoveProductFromCheckoutMutation } from '../../generated/graphql';
 import { formatMoney } from '../../lib/format';
-import { CheckoutListItemQuantityInput } from './CheckoutListItemQuantityInput';
 import { useCheckout } from '../CheckoutProvider';
+
+import { CheckoutListItemQuantityInput } from './CheckoutListItemQuantityInput';
+
+import type { CheckoutLineDetailsFragment } from '../../generated/graphql';
 
 interface CheckoutListItemProps {
 	checkoutLine: CheckoutLineDetailsFragment;
@@ -15,8 +16,12 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 	const { token } = useCheckout();
 	const [removeProductFromCheckout] = useRemoveProductFromCheckoutMutation();
 
+	if (!token) {
+		return <div />;
+	}
+
 	const handleRemove = () => {
-		removeProductFromCheckout({
+		void removeProductFromCheckout({
 			variables: {
 				lineId: checkoutLine.id,
 				checkoutToken: token,

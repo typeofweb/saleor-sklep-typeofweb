@@ -1,10 +1,14 @@
-import { ChangeEventHandler, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
-import { useAllPagesContext } from '../AllPagesContext';
-import { ShoppingCartStatus } from './ShoppingCartStatus';
+import { Fragment, useState } from 'react';
 import { useIntl } from 'react-intl';
+
+import { useAllPagesContext } from '../AllPagesContext';
+
+import { ShoppingCartStatus } from './ShoppingCartStatus';
+
+import type { ChangeEventHandler } from 'react';
 
 export const Header = () => {
 	const [open, setOpen] = useState(false);

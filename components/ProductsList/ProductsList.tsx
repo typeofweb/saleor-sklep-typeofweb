@@ -1,12 +1,13 @@
-import { ProductListItemFragment } from '../../generated/graphql';
 import { ProductsListItem } from './ProductsListItem';
+
+import type { ProductListItemFragment } from '../../generated/graphql';
 
 interface ProductsListProps {
 	loading: boolean;
 	products: readonly ProductListItemFragment[];
 }
 
-export default function ProductsList({ products, loading }: ProductsListProps) {
+export function ProductsList({ products, loading }: ProductsListProps) {
 	return (
 		<div
 			className={`bg-white transition-opacity ${

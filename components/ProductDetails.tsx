@@ -1,11 +1,14 @@
-import { Fragment } from 'react';
 import { Tab } from '@headlessui/react';
-import { classNames } from '../lib/utils';
-import { ProductDetailsFragment } from '../generated/graphql';
 import Image from 'next/future/image';
-import { formatMoney } from '../lib/format';
 import { useRouter } from 'next/router';
+import { Fragment } from 'react';
+
+import { formatMoney } from '../lib/format';
+import { classNames } from '../lib/utils';
+
 import { AddProductToCartButton } from './AddProductToCartButton';
+
+import type { ProductDetailsFragment } from '../generated/graphql';
 
 interface ProductDetailsProps {
 	product: Omit<ProductDetailsFragment, 'description'> & {
@@ -16,8 +19,8 @@ interface ProductDetailsProps {
 export function ProductDetails({ product }: ProductDetailsProps) {
 	const router = useRouter();
 
-	const afterBuy = async () => {
-		router.push('/bag');
+	const afterBuy = () => {
+		void router.push('/bag');
 	};
 
 	return (

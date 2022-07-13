@@ -1,3 +1,25 @@
 {
-	"extends": "next/core-web-vitals"
+	"parserOptions": {
+		"project": "tsconfig.json"
+	},
+	"plugins": ["formatjs", "@typeofweb/eslint-plugin"],
+	"extends": ["next/core-web-vitals", "plugin:@typeofweb/recommended"],
+	"rules": {
+		"formatjs/enforce-id": [
+			"error",
+			{
+				"idInterpolationPattern": "[sha512:contenthash:base64:6]"
+			}
+		],
+		"functional/prefer-readonly-type": 0,
+		"@typeofweb/capitalize-modules": 0
+	},
+	"overrides": [
+		{
+			"files": ["pages/**/*.tsx"],
+			"rules": {
+				"import/no-default-export": 0
+			}
+		}
+	]
 }

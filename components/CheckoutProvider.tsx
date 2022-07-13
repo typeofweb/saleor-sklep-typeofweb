@@ -1,33 +1,35 @@
-import { QueryResult } from '@apollo/client';
 import { invariant } from '@apollo/client/utilities/globals';
 import {
 	createContext,
-	ReactElement,
 	useCallback,
 	useContext,
 	useEffect,
 	useState,
 } from 'react';
+
 import {
-	CheckoutDetailsFragment,
-	CheckoutGetByTokenQuery,
-	Exact,
 	useCheckoutCreateForChannelMutation,
 	useCheckoutGetByTokenQuery,
 } from '../generated/graphql';
 import * as ls from '../lib/localStorage';
+
 import { useAllPagesContext } from './AllPagesContext';
 
-type TokenInLs = Record<string, string | null> | null;
-const lsGetTokens = () => ls.getItem('TOKEN') as TokenInLs;
-const lsSetTokens = (token: TokenInLs) => ls.setItem('TOKEN', token);
+import type { CheckoutGetByTokenQuery, Exact } from '../generated/graphql';
+import type { QueryResult } from '@apollo/client';
+import type { ReactElement } from 'react';
+
+type ChannelToTokenInLs = Record<string, string | null | undefined> | null;
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- @todo
+const lsGetTokens = () => ls.getItem('TOKEN') as ChannelToTokenInLs;
+const lsSetTokens = (token: ChannelToTokenInLs) => ls.setItem('TOKEN', token);
 
 interface CheckoutContextValue {
 	token: string | undefined | null;
 	checkoutByToken: QueryResult<
 		CheckoutGetByTokenQuery,
 		Exact<{
-			checkoutToken: CheckoutDetailsFragment | undefined | null;
+			checkoutToken: string;
 		}>
 	>;
 }
@@ -50,7 +52,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 	);
 
 	const [tokenForChannelSlugs, setTokenForChannelSlugs] =
-		useState<TokenInLs>(null);
+		useState<ChannelToTokenInLs>(null);
 
 	const {
 		userChannel: { selectedChannel },
@@ -59,7 +61,8 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 	const checkoutByTokenResponse = useCheckoutGetByTokenQuery({
 		skip: !tokenForChannelSlugs?.[selectedChannel.slug],
 		variables: {
-			checkoutToken: tokenForChannelSlugs?.[selectedChannel.slug],
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain -- query will not execute unless this is truthy
+			checkoutToken: tokenForChannelSlugs?.[selectedChannel.slug]!,
 		},
 	});
 
@@ -67,9 +70,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		useCheckoutCreateForChannelMutation();
 
 	const updateTokenForChannelSlug = useCallback(
-		(currency: string, token: string | null) => {
+		(currency: string, token: string | null | undefined) => {
 			setTokenForChannelSlugs((prevTokens) => {
-				const newTokens = {
+				const newTokens: ChannelToTokenInLs = {
 					...(prevTokens || {}),
 					[currency]: token,
 				};
@@ -98,7 +101,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 			if (checkoutByTokenResponse.loading) {
 				return setState('loading-checkout-from-graphql');
 			} else {
-				checkoutByTokenResponse.refetch({ checkoutToken: token });
+				void checkoutByTokenResponse.refetch({ checkoutToken: token });
 			}
 		}
 		if (state === 'loading-checkout-from-graphql') {
@@ -116,7 +119,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 			return;
 		}
 		if (state === 'error-checkout-from-graphql') {
-			createCheckout({
+			void createCheckout({
 				variables: {
 					channel: selectedChannel.slug,
 				},

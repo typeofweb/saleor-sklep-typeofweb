@@ -1,11 +1,12 @@
-import { ChangeEventHandler, useState } from 'react';
-import {
-	CheckoutLineDetailsFragment,
-	useCheckoutLinesUpdateMutation,
-} from '../../generated/graphql';
+import { useState } from 'react';
+
+import { useCheckoutLinesUpdateMutation } from '../../generated/graphql';
 import { useDebouncedCallback } from '../../lib/useDebouncedCallback';
 import { useEvent } from '../../lib/useEvent';
 import { useCheckout } from '../CheckoutProvider';
+
+import type { CheckoutLineDetailsFragment } from '../../generated/graphql';
+import type { ChangeEventHandler } from 'react';
 
 interface CheckoutListItemQuantityInputProps {
 	checkoutLine: CheckoutLineDetailsFragment;
@@ -25,7 +26,11 @@ export const CheckoutListItemQuantityInput = ({
 
 	const save = useDebouncedCallback(
 		useEvent(() => {
-			updateLine({
+			if (!token) {
+				return;
+			}
+
+			void updateLine({
 				variables: {
 					lines: [
 						{

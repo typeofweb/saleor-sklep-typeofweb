@@ -1,4 +1,3 @@
-import { InferGetStaticPropsType } from 'next';
 import { ProductDetails } from '../components/ProductDetails';
 import {
 	getServerPageGetProductDetails,
@@ -6,7 +5,9 @@ import {
 } from '../generated/page';
 import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
 import { parseEditorJsToHtml } from '../lib/parseEditorJs';
-import { InferGetStaticPathsType } from '../types';
+
+import type { InferGetStaticPathsType } from '../types';
+import type { InferGetStaticPropsType } from 'next';
 
 const ProductSlugPage = ({
 	product,

@@ -22,10 +22,10 @@ export type Scalars = {
 	Date: any;
 	DateTime: string;
 	GenericScalar: any;
-	JSONString: any;
+	JSONString: string;
 	Metadata: any;
 	PositiveDecimal: any;
-	UUID: any;
+	UUID: string;
 	Upload: any;
 	WeightScalar: any;
 	_Any: any;
@@ -20647,7 +20647,7 @@ export type CheckoutAddToCartMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
-			readonly token: any;
+			readonly token: string;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -20716,7 +20716,7 @@ export type CheckoutCreateForChannelMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
-			readonly token: any;
+			readonly token: string;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -20814,7 +20814,7 @@ export type CheckoutDetailsFragment = {
 	readonly __typename?: 'Checkout';
 	readonly id: string;
 	readonly email?: string | null;
-	readonly token: any;
+	readonly token: string;
 	readonly lines: ReadonlyArray<{
 		readonly __typename?: 'CheckoutLine';
 		readonly id: string;
@@ -20875,7 +20875,7 @@ export type CheckoutGetByTokenQuery = {
 		readonly __typename?: 'Checkout';
 		readonly id: string;
 		readonly email?: string | null;
-		readonly token: any;
+		readonly token: string;
 		readonly lines: ReadonlyArray<{
 			readonly __typename?: 'CheckoutLine';
 			readonly id: string;
@@ -20940,7 +20940,7 @@ export type CheckoutLinesUpdateMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
-			readonly token: any;
+			readonly token: string;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -21010,7 +21010,7 @@ export type RemoveProductFromCheckoutMutation = {
 			readonly __typename?: 'Checkout';
 			readonly id: string;
 			readonly email?: string | null;
-			readonly token: any;
+			readonly token: string;
 			readonly lines: ReadonlyArray<{
 				readonly __typename?: 'CheckoutLine';
 				readonly id: string;
@@ -21148,7 +21148,7 @@ export type ProductDetailsFragment = {
 	readonly id: string;
 	readonly name: string;
 	readonly slug: string;
-	readonly description?: any | null;
+	readonly description?: string | null;
 	readonly defaultVariant?: {
 		readonly __typename?: 'ProductVariant';
 		readonly id: string;
@@ -21198,7 +21198,7 @@ export type GetProductDetailsQuery = {
 		readonly id: string;
 		readonly name: string;
 		readonly slug: string;
-		readonly description?: any | null;
+		readonly description?: string | null;
 		readonly defaultVariant?: {
 			readonly __typename?: 'ProductVariant';
 			readonly id: string;

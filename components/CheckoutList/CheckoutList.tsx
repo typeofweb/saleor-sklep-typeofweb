@@ -1,6 +1,7 @@
-import { CheckoutDetailsFragment } from '../../generated/graphql';
 import { CheckoutListEmpty } from './CheckoutListEmpty';
 import { CheckoutListNotEmpty } from './CheckoutListNotEmpty';
+
+import type { CheckoutDetailsFragment } from '../../generated/graphql';
 
 interface CheckoutListProps {
 	checkout: CheckoutDetailsFragment | undefined | null;

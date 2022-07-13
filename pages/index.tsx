@@ -1,9 +1,10 @@
-import { InferGetStaticPropsType } from 'next';
 import { useAllPagesContext } from '../components/AllPagesContext';
-import ProductsList from '../components/ProductsList/ProductsList';
+import { ProductsList } from '../components/ProductsList/ProductsList';
 import { useProductsGetForChannelQuery } from '../generated/graphql';
 import { getServerPageProductsGetForChannel } from '../generated/page';
 import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
+
+import type { InferGetStaticPropsType } from 'next';
 
 const IndexPage = ({
 	products,

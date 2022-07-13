@@ -19,6 +19,8 @@ extensions:
           useTypeImports: true
           scalars:
             DateTime: string
+            UUID: string
+            JSONString: string
       ./generated/page.tsx:
         config:
           reactApolloVersion: 3

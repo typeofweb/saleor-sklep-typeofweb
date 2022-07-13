@@ -1,6 +1,7 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
+
 import { useCheckout } from '../CheckoutProvider';
 
 export const ShoppingCartStatus = () => {

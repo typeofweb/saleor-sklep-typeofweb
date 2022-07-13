@@ -1,7 +1,9 @@
-import { ProductListItemFragment } from '../../generated/graphql';
 import Image from 'next/future/image';
+
 import { formatMoney } from '../../lib/format';
 import { AddProductToCartButton } from '../AddProductToCartButton';
+
+import type { ProductListItemFragment } from '../../generated/graphql';
 
 interface ProductsListItemProps {
 	product: ProductListItemFragment;
