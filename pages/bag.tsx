@@ -23,10 +23,3 @@ export const getStaticProps = async () => {
 		revalidate: 60,
 	};
 };
-
-export const getStaticPaths = () => {
-	return {
-		paths: [],
-		fallback: 'blocking',
-	};
-};
