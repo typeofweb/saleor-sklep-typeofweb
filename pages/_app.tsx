@@ -27,15 +27,11 @@ export default function MyApp({
 }: MyAppProps) {
 	const [apolloClient] = useState(() => getApolloClient({}, apolloState));
 	const { locale, messages } = useLocale();
-	// const router = useRouter();
-
-	// invariant(pagesCtx, `Missing pagesCtx! ${router.pathname}`);
-	if (!pagesCtx) {
-		return <div></div>;
-	}
 
 	return (
-		<AllPagesContextProvider allPagesCtx={pagesCtx}>
+		<AllPagesContextProvider
+			allPagesCtx={pagesCtx || { channels: { channels: [] } }}
+		>
 			<ApolloProvider client={apolloClient}>
 				<IntlProvider
 					locale={locale}
