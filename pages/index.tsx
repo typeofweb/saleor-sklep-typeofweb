@@ -67,3 +67,10 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
 		revalidate: 60,
 	};
 };
+
+export const getStaticPaths = () => {
+	return {
+		paths: [],
+		fallback: 'blocking',
+	};
+};
