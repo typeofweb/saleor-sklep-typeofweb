@@ -9,12 +9,12 @@ const IndexPage = ({
 	products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	const {
-		userCurrency: { selectedCurrency },
+		userChannel: { selectedChannel },
 	} = useAllPagesContext();
 
 	const { data, loading } = useProductsGetForChannelQuery({
 		variables: {
-			channel: selectedCurrency,
+			channel: selectedChannel.slug,
 			first: 10,
 		},
 		fetchPolicy: 'cache-and-network',

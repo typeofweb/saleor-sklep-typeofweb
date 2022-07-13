@@ -1,9 +1,11 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
+import { useIntl } from 'react-intl';
 import { useCheckout } from '../CheckoutProvider';
 
 export const ShoppingCartStatus = () => {
 	const { checkoutByToken } = useCheckout();
+	const intl = useIntl();
 
 	return (
 		<div className="flex-1 flex items-center justify-end">
@@ -21,7 +23,12 @@ export const ShoppingCartStatus = () => {
 									0,
 								)}
 							</span>
-							<span className="sr-only">items in cart, view bag</span>
+							<span className="sr-only">
+								{intl.formatMessage({
+									defaultMessage: 'items in cart, view bag',
+									id: '6B13ES',
+								})}
+							</span>
 						</a>
 					</Link>
 				</div>

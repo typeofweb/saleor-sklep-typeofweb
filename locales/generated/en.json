@@ -1,0 +1,37 @@
+{
+  "55hdQy": [
+    {
+      "type": 0,
+      "value": "Currency"
+    }
+  ],
+  "5U3ydB": [
+    {
+      "type": 0,
+      "value": "Get free delivery on orders over "
+    },
+    {
+      "style": {
+        "parsedOptions": {
+          "style": "currency"
+        },
+        "tokens": [
+          {
+            "options": [
+            ],
+            "stem": "currency"
+          }
+        ],
+        "type": 0
+      },
+      "type": 2,
+      "value": "val"
+    }
+  ],
+  "dg8ZEb": [
+    {
+      "type": 0,
+      "value": "Close menu"
+    }
+  ]
+}

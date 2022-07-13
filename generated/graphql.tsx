@@ -20613,6 +20613,14 @@ export type _Service = {
 	readonly sdl?: Maybe<Scalars['String']>;
 };
 
+export type ChannelDetailsFragment = {
+	readonly __typename?: 'Channel';
+	readonly slug: string;
+	readonly currencyCode: string;
+	readonly isActive: boolean;
+	readonly id: string;
+};
+
 export type ChannelsGetQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ChannelsGetQuery = {
@@ -21257,6 +21265,14 @@ export type ProductsSlugsQuery = {
 	} | null;
 };
 
+export const ChannelDetailsFragmentDoc = gql`
+	fragment ChannelDetails on Channel {
+		slug
+		currencyCode
+		isActive
+		id
+	}
+`;
 export const CheckoutLineDetailsFragmentDoc = gql`
 	fragment CheckoutLineDetails on CheckoutLine {
 		id
@@ -21370,12 +21386,10 @@ export const ProductDetailsFragmentDoc = gql`
 export const ChannelsGetDocument = gql`
 	query ChannelsGet {
 		channels {
-			slug
-			currencyCode
-			isActive
-			id
+			...ChannelDetails
 		}
 	}
+	${ChannelDetailsFragmentDoc}
 `;
 
 /**

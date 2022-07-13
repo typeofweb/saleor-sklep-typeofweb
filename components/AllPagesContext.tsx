@@ -9,19 +9,15 @@ import {
 	useMemo,
 } from 'react';
 import { GetServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
+import { ChannelDetailsFragment } from '../generated/graphql';
 
 interface AllPagesContextValue {
 	allPagesCtx: GetServerAllPagesCtx;
-	userCurrency: {
-		currencies: ReadonlyArray<{
-			readonly slug: string;
-			readonly currencyCode: string;
-			readonly isActive: boolean;
-			readonly id: string;
-		}>;
-		defaultCurrency: string | undefined;
-		selectedCurrency: string;
-		setSelectedCurrency: (value: string) => void;
+	userChannel: {
+		channels: ReadonlyArray<ChannelDetailsFragment>;
+		defaultChannel: ChannelDetailsFragment | undefined;
+		selectedChannel: ChannelDetailsFragment;
+		setSelectedChannelSlug: (value: string) => void;
 	};
 }
 const AllPagesContext = createContext<AllPagesContextValue | null>(null);
@@ -43,46 +39,46 @@ export const AllPagesContextProvider = ({
 	children,
 	allPagesCtx,
 }: AllPagesContextProviderProps) => {
-	const currencies = useMemo(
+	const channels = useMemo(
 		() => allPagesCtx.channels.channels || [],
 		[allPagesCtx.channels.channels],
 	);
-	const defaultCurrency = currencies[0]?.slug;
+	const defaultChannel = channels[0];
 
-	const [selectedCurrency, setCookieCurrency] = useCookie(
+	const [cookieChannelSlug, setCookieChannelSlug] = useCookie(
 		`CURRENCY`,
-		defaultCurrency,
+		defaultChannel?.slug,
 	);
 
-	const setSelectedCurrency = useCallback(
+	const setSelectedChannelSlug = useCallback(
 		(value: string) => {
-			setCookieCurrency(value, { days: 365 });
+			setCookieChannelSlug(value, { days: 365 });
 		},
-		[setCookieCurrency],
+		[setCookieChannelSlug],
 	);
 
 	useEffect(() => {
 		// trigger save of the default value
-		setSelectedCurrency(selectedCurrency);
+		setSelectedChannelSlug(cookieChannelSlug);
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- trigger only once
 	}, []);
 
 	const value = useMemo(
 		() => ({
 			allPagesCtx,
-			userCurrency: {
-				currencies,
-				defaultCurrency,
-				selectedCurrency,
-				setSelectedCurrency,
+			userChannel: {
+				channels,
+				defaultChannel,
+				selectedChannel: channels.find((c) => c.slug === cookieChannelSlug)!,
+				setSelectedChannelSlug,
 			},
 		}),
 		[
 			allPagesCtx,
-			currencies,
-			defaultCurrency,
-			selectedCurrency,
-			setSelectedCurrency,
+			channels,
+			defaultChannel,
+			cookieChannelSlug,
+			setSelectedChannelSlug,
 		],
 	);
 

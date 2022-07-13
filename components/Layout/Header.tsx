@@ -4,6 +4,7 @@ import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useAllPagesContext } from '../AllPagesContext';
 import { ShoppingCartStatus } from './ShoppingCartStatus';
+import { useIntl } from 'react-intl';
 
 export const Header = () => {
 	const [open, setOpen] = useState(false);
@@ -17,12 +18,14 @@ export const Header = () => {
 	};
 
 	const {
-		userCurrency: { setSelectedCurrency, selectedCurrency, currencies },
+		userChannel: { setSelectedChannelSlug, selectedChannel, channels },
 	} = useAllPagesContext();
 
 	const handleCurrencyChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-		setSelectedCurrency(e.currentTarget.value);
+		setSelectedChannelSlug(e.currentTarget.value);
 	};
+
+	const intl = useIntl();
 
 	return (
 		<>
@@ -65,7 +68,12 @@ export const Header = () => {
 										className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
 										onClick={() => setOpen(false)}
 									>
-										<span className="sr-only">Close menu</span>
+										<span className="sr-only">
+											{intl.formatMessage({
+												defaultMessage: 'Close menu',
+												id: 'dg8ZEb',
+											})}
+										</span>
 										<XIcon
 											className="h-6 w-6"
 											aria-hidden="true"
@@ -97,22 +105,25 @@ export const Header = () => {
 												htmlFor="mobile-currency"
 												className="sr-only"
 											>
-												Currency
+												{intl.formatMessage({
+													defaultMessage: 'Currency',
+													id: '55hdQy',
+												})}
 											</label>
 											<div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
 												<select
 													id="mobile-currency"
 													name="currency"
 													className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
-													value={selectedCurrency}
+													value={selectedChannel.slug}
 													onChange={handleCurrencyChange}
 												>
-													{currencies.map((currency) => (
+													{channels.map((channel) => (
 														<option
-															key={currency.id}
-															value={currency.slug}
+															key={channel.id}
+															value={channel.slug}
 														>
-															{currency.currencyCode}
+															{channel.currencyCode}
 														</option>
 													))}
 												</select>
@@ -155,22 +166,25 @@ export const Header = () => {
 										htmlFor="desktop-currency"
 										className="sr-only"
 									>
-										Currency
+										{intl.formatMessage({
+											defaultMessage: 'Currency',
+											id: '55hdQy',
+										})}
 									</label>
 									<div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
 										<select
 											id="desktop-currency"
 											name="currency"
 											className="bg-none bg-gray-900 border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-white group-hover:text-gray-100 focus:outline-none focus:ring-0 focus:border-transparent"
-											value={selectedCurrency}
+											value={selectedChannel.slug}
 											onChange={handleCurrencyChange}
 										>
-											{currencies.map((currency) => (
+											{channels.map((channel) => (
 												<option
-													key={currency.id}
-													value={currency.slug}
+													key={channel.id}
+													value={channel.slug}
 												>
-													{currency.currencyCode}
+													{channel.currencyCode}
 												</option>
 											))}
 										</select>
@@ -196,7 +210,14 @@ export const Header = () => {
 							</form>
 
 							<p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-								Get free delivery on orders over $100
+								{intl.formatMessage({
+									defaultMessage: `Get free delivery on orders over`,
+									id: 'lvqxJ+',
+								})}{' '}
+								{intl.formatNumber(100, {
+									style: 'currency',
+									currency: selectedChannel.currencyCode,
+								})}
 							</p>
 						</div>
 					</div>
@@ -211,7 +232,10 @@ export const Header = () => {
 										<Link href="/">
 											<a>
 												<span className="sr-only">
-													Sklep Type of Web - strona główna
+													{intl.formatMessage({
+														defaultMessage: 'Sklep Type of Web - strona główna',
+														id: '2woeKq',
+													})}
 												</span>
 												<img
 													className="h-8 w-auto"
@@ -246,7 +270,12 @@ export const Header = () => {
 											className="-ml-2 bg-white p-2 rounded-md text-gray-400"
 											onClick={() => setOpen(true)}
 										>
-											<span className="sr-only">Open menu</span>
+											<span className="sr-only">
+												{intl.formatMessage({
+													defaultMessage: 'Open menu',
+													id: 'bdcMGy',
+												})}
+											</span>
 											<MenuIcon
 												className="h-6 w-6"
 												aria-hidden="true"
@@ -258,7 +287,10 @@ export const Header = () => {
 									<Link href="/">
 										<a className="lg:hidden">
 											<span className="sr-only">
-												Sklep Type of Web - strona główna
+												{intl.formatMessage({
+													defaultMessage: 'Sklep Type of Web - strona główna',
+													id: '2woeKq',
+												})}
 											</span>
 											<img
 												src="https://tailwindui.com/img/logos/workflow-mark.svg?color=green&shade=600"

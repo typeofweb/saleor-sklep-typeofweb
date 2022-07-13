@@ -49,25 +49,26 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		'loading-initial-local-storage-tokens',
 	);
 
-	const [tokensForCurrency, setTokensForCurrency] = useState<TokenInLs>(null);
+	const [tokenForChannelSlugs, setTokenForChannelSlugs] =
+		useState<TokenInLs>(null);
 
 	const {
-		userCurrency: { selectedCurrency },
+		userChannel: { selectedChannel },
 	} = useAllPagesContext();
 
 	const checkoutByTokenResponse = useCheckoutGetByTokenQuery({
-		skip: !tokensForCurrency?.[selectedCurrency],
+		skip: !tokenForChannelSlugs?.[selectedChannel.slug],
 		variables: {
-			checkoutToken: tokensForCurrency?.[selectedCurrency],
+			checkoutToken: tokenForChannelSlugs?.[selectedChannel.slug],
 		},
 	});
 
 	const [createCheckout, createCheckoutResponse] =
 		useCheckoutCreateForChannelMutation();
 
-	const updateTokenForCurrency = useCallback(
+	const updateTokenForChannelSlug = useCallback(
 		(currency: string, token: string | null) => {
-			setTokensForCurrency((prevTokens) => {
+			setTokenForChannelSlugs((prevTokens) => {
 				const newTokens = {
 					...(prevTokens || {}),
 					[currency]: token,
@@ -79,25 +80,25 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		[],
 	);
 
+	const token = tokenForChannelSlugs?.[selectedChannel.slug];
+
 	useEffect(() => {
 		setState('loaded-initial-local-storage-tokens');
-	}, [selectedCurrency]);
+	}, [selectedChannel.slug]);
 
 	useEffect(() => {
 		if (state === 'loading-initial-local-storage-tokens') {
-			setTokensForCurrency(lsGetTokens() || {});
+			setTokenForChannelSlugs(lsGetTokens() || {});
 			return setState('loaded-initial-local-storage-tokens');
 		}
 		if (state === 'loaded-initial-local-storage-tokens') {
-			if (!tokensForCurrency?.[selectedCurrency]) {
+			if (!token) {
 				return setState('error-checkout-from-graphql');
 			}
 			if (checkoutByTokenResponse.loading) {
 				return setState('loading-checkout-from-graphql');
 			} else {
-				checkoutByTokenResponse.refetch({
-					checkoutToken: tokensForCurrency?.[selectedCurrency],
-				});
+				checkoutByTokenResponse.refetch({ checkoutToken: token });
 			}
 		}
 		if (state === 'loading-checkout-from-graphql') {
@@ -117,7 +118,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		if (state === 'error-checkout-from-graphql') {
 			createCheckout({
 				variables: {
-					channel: selectedCurrency,
+					channel: selectedChannel.slug,
 				},
 			});
 			return setState('creating-checkout-graphql');
@@ -128,8 +129,8 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 				return;
 			}
 			if (createCheckoutResponse.data) {
-				updateTokenForCurrency(
-					selectedCurrency,
+				updateTokenForChannelSlug(
+					selectedChannel.slug,
 					createCheckoutResponse.data.checkoutCreate?.checkout?.token,
 				);
 				return setState('loading-checkout-from-graphql');
@@ -141,16 +142,16 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		createCheckout,
 		createCheckoutResponse.data,
 		createCheckoutResponse.error,
-		selectedCurrency,
+		selectedChannel.slug,
 		state,
-		tokensForCurrency,
-		updateTokenForCurrency,
+		token,
+		updateTokenForChannelSlug,
 	]);
 
 	return (
 		<CheckoutContext.Provider
 			value={{
-				token: tokensForCurrency?.[selectedCurrency],
+				token,
 				checkoutByToken: checkoutByTokenResponse,
 			}}
 		>

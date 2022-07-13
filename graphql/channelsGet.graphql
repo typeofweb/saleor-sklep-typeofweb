@@ -1,8 +1,12 @@
+fragment ChannelDetails on Channel {
+	slug
+	currencyCode
+	isActive
+	id
+}
+
 query ChannelsGet {
 	channels {
-		slug
-		currencyCode
-		isActive
-		id
+		...ChannelDetails
 	}
 }

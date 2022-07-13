@@ -7,7 +7,10 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"generate-graphql": "DOTENV_CONFIG_PATH=.env.local graphql-codegen -r dotenv/config"
+		"generate-graphql": "DOTENV_CONFIG_PATH=.env.local graphql-codegen -r dotenv/config",
+		"i18n:extract": "formatjs extract '{pages,components,lib}/**/*.{ts,tsx}' --format transifex --id-interpolation-pattern '[folder]/[name]/[sha512:contenthash:base64:6]' --out-file locales/en.json",
+		"i18n:compile": "formatjs compile-folder --ast --format transifex locales locales/generated",
+		"i18n": "yarn i18n:extract && yarn i18n:compile"
 	},
 	"dependencies": {
 		"@apollo/client": "3.6.9",
@@ -20,12 +23,14 @@
 		"next": "12.2.0",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
+		"react-intl": "6.0.5",
 		"react-use-cookie": "1.4.0",
 		"saleor": "1.9.0",
 		"tailwindcss": "3.1.4",
 		"xss": "1.0.13"
 	},
 	"devDependencies": {
+		"@formatjs/cli": "5.0.2",
 		"@graphql-codegen/cli": "2.7.0",
 		"@graphql-codegen/import-types-preset": "2.1.21",
 		"@graphql-codegen/introspection": "2.1.1",
@@ -33,6 +38,7 @@
 		"@graphql-codegen/typescript-graphql-files-modules": "2.1.1",
 		"@graphql-codegen/typescript-operations": "2.4.3",
 		"@graphql-codegen/typescript-react-apollo": "3.2.17",
+		"@typeofweb/eslint-plugin": "0.3.0",
 		"@types/node": "18.0.1",
 		"@types/react": "18.0.14",
 		"@types/react-dom": "18.0.5",
@@ -40,6 +46,7 @@
 		"dotenv": "16.0.1",
 		"eslint": "8.19.0",
 		"eslint-config-next": "12.2.0",
+		"eslint-plugin-formatjs": "4.0.2",
 		"graphql-codegen-apollo-next-ssr": "1.7.3",
 		"husky": "8.0.1",
 		"lint-staged": "13.0.3",
