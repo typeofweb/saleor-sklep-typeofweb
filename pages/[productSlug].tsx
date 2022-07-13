@@ -43,8 +43,10 @@ export const getStaticProps = async ({
 	locale,
 	defaultLocale,
 }: InferGetStaticPathsType<typeof getStaticPaths>) => {
+	const pagesCtx = await getServerAllPagesCtx();
+
 	if (!params) {
-		return { props: {}, notFound: true };
+		return { props: { pagesCtx }, notFound: true };
 	}
 
 	const { languageCode } = localeToLanguageCode(locale || defaultLocale);
@@ -56,8 +58,6 @@ export const getStaticProps = async ({
 		},
 	});
 	const { product } = productDetailsRes.props.data;
-
-	const pagesCtx = await getServerAllPagesCtx();
 
 	if (!product) {
 		return { props: { pagesCtx }, notFound: true };

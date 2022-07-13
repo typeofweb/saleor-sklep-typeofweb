@@ -1,8 +1,6 @@
 import '../styles/globals.css';
 
 import { ApolloProvider } from '@apollo/client';
-import { invariant } from '@apollo/client/utilities/globals';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { IntlProvider } from 'react-intl';
 
@@ -29,9 +27,12 @@ export default function MyApp({
 }: MyAppProps) {
 	const [apolloClient] = useState(() => getApolloClient({}, apolloState));
 	const { locale, messages } = useLocale();
-	const router = useRouter();
+	// const router = useRouter();
 
-	invariant(pagesCtx, `Missing pagesCtx! ${router.pathname}`);
+	// invariant(pagesCtx, `Missing pagesCtx! ${router.pathname}`);
+	if (!pagesCtx) {
+		return <div></div>;
+	}
 
 	return (
 		<AllPagesContextProvider allPagesCtx={pagesCtx}>
