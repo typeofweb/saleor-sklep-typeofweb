@@ -60,7 +60,6 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		variables: {
 			checkoutToken: tokensForCurrency?.[selectedCurrency],
 		},
-		fetchPolicy: 'no-cache',
 	});
 
 	const [createCheckout, createCheckoutResponse] =
