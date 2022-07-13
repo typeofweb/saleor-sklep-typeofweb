@@ -25,7 +25,7 @@ type MyAppProps = Omit<AppProps, 'pageProps'> & {
 };
 export default function MyApp({
 	Component,
-	pageProps: { pagesCtx, apolloState, ...pageProps },
+	pageProps: { pagesCtx, apolloState, ...pageProps } = {},
 }: MyAppProps) {
 	const [apolloClient] = useState(() => getApolloClient({}, apolloState));
 	const { locale, messages } = useLocale();
