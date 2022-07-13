@@ -18,8 +18,8 @@ const nextConfig = {
 	],
 	experimental: { images: { allowFutureImage: true } },
 	i18n: {
-		defaultLocale: 'default',
-		locales: ['default', 'pl', 'en'],
+		defaultLocale: 'pl',
+		locales: ['pl', 'en'],
 	},
 };
 

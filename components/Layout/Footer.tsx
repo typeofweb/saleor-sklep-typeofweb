@@ -15,22 +15,20 @@ export const Footer = () => {
 	return (
 		<footer>
 			<ul className="flex gap-4 max-w-xs m-auto pb-4 justify-center">
-				{locales
-					?.filter((l) => l !== 'default')
-					.map((l) => (
-						<li
-							key={l}
-							className="p-0 m-0"
+				{locales?.map((l) => (
+					<li
+						key={l}
+						className="p-0 m-0"
+					>
+						<Link
+							locale={l}
+							href={{ pathname, query }}
+							as={asPath}
 						>
-							<Link
-								locale={l}
-								href={{ pathname, query }}
-								as={asPath}
-							>
-								<a onClick={getHandleLocaleClick(l)}>{l}</a>
-							</Link>
-						</li>
-					))}
+							<a onClick={getHandleLocaleClick(l)}>{l}</a>
+						</Link>
+					</li>
+				))}
 			</ul>
 		</footer>
 	);
