@@ -40,6 +40,8 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 					<Image
 						src={checkoutLine.variant.product.thumbnail.url}
 						alt={checkoutLine.variant.product.thumbnail.alt || ''}
+						width={365}
+						height={365}
 						className="w-24 h-24 rounded-lg object-center object-cover sm:w-32 sm:h-32"
 					/>
 				)}

@@ -10,14 +10,11 @@ const nextConfig = {
 		domains: ['typeofweb.eu.saleor.cloud'],
 		formats: ['image/avif', 'image/webp'],
 	},
-	experimental: { images: { allowFutureImage: true } },
 	i18n: {
 		defaultLocale: 'pl',
 		locales: ['pl', 'en'],
 	},
-	experimental: {
-		images: { allowFutureImage: true },
-	},
+	experimental: { images: { allowFutureImage: true } },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

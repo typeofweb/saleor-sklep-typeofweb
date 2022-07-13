@@ -38,6 +38,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 								<Image
 									src={product.media[0].url}
 									alt={product.media[0].alt}
+									width={365}
+									height={365}
 									className="object-center object-contain"
 									priority={true}
 								/>

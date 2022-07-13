@@ -4,7 +4,8 @@ import useCookie from 'react-use-cookie';
 
 export const Footer = () => {
 	const { locales, locale } = useRouter();
-	const { pathname, asPath, query } = useRouter();
+	const { asPath } = useRouter();
+	console.log(asPath);
 	const [, setLocaleCookie] = useCookie('NEXT_LOCALE');
 
 	const getHandleLocaleClick = (locale: string) => () => {
@@ -24,8 +25,7 @@ export const Footer = () => {
 						) : (
 							<Link
 								locale={l}
-								href={{ pathname, query }}
-								as={asPath}
+								href={asPath}
 							>
 								<a onClick={getHandleLocaleClick(l)}>{l}</a>
 							</Link>
