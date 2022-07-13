@@ -3,12 +3,11 @@ import { useRouter } from 'next/router';
 import useCookie from 'react-use-cookie';
 
 export const Footer = () => {
-	const { locales } = useRouter();
+	const { locales, locale } = useRouter();
 	const { pathname, asPath, query } = useRouter();
 	const [, setLocaleCookie] = useCookie('NEXT_LOCALE');
 
 	const getHandleLocaleClick = (locale: string) => () => {
-		console.log(locale);
 		setLocaleCookie(locale);
 	};
 
@@ -20,13 +19,17 @@ export const Footer = () => {
 						key={l}
 						className="p-0 m-0"
 					>
-						<Link
-							locale={l}
-							href={{ pathname, query }}
-							as={asPath}
-						>
-							<a onClick={getHandleLocaleClick(l)}>{l}</a>
-						</Link>
+						{locale === l ? (
+							<span>{l}</span>
+						) : (
+							<Link
+								locale={l}
+								href={{ pathname, query }}
+								as={asPath}
+							>
+								<a onClick={getHandleLocaleClick(l)}>{l}</a>
+							</Link>
+						)}
 					</li>
 				))}
 			</ul>

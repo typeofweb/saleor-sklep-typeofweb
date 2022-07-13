@@ -24,6 +24,8 @@ export const ProductsListItem = ({ product }: ProductsListItemProps) => {
 							src={product.media[0].url}
 							alt={product.media[0].alt || ''}
 							priority={true}
+							width={365}
+							height={365}
 							className="w-full h-full object-center object-cover group-hover:opacity-75"
 						/>
 					)}
