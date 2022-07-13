@@ -16,10 +16,8 @@ const nextConfig = {
 		locales: ['pl', 'en'],
 	},
 	experimental: {
-		runtime: 'experimental-edge',
 		images: { allowFutureImage: true },
 	},
-	trailingSlash: true,
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
