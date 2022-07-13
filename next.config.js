@@ -25,6 +25,7 @@ const nextConfig = {
 		runtime: 'experimental-edge',
 		images: { allowFutureImage: true },
 	},
+	trailingSlash: true,
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
