@@ -1,37 +1,118 @@
 {
-  "55hdQy": [
-    {
-      "type": 0,
-      "value": "Currency"
-    }
-  ],
-  "5U3ydB": [
-    {
-      "type": 0,
-      "value": "Get free delivery on orders over "
-    },
-    {
-      "style": {
-        "parsedOptions": {
-          "style": "currency"
-        },
-        "tokens": [
-          {
-            "options": [
-            ],
-            "stem": "currency"
-          }
-        ],
-        "type": 0
-      },
-      "type": 2,
-      "value": "val"
-    }
-  ],
-  "dg8ZEb": [
-    {
-      "type": 0,
-      "value": "Close menu"
-    }
-  ]
+	"/hlESA": [
+		{
+			"type": 0,
+			"value": "Additional product information"
+		}
+	],
+	"06VF+w": [
+		{
+			"type": 0,
+			"value": "Share on Facebook"
+		}
+	],
+	"2Zb6eo": [
+		{
+			"type": 0,
+			"value": "Product information"
+		}
+	],
+	"55hdQy": [
+		{
+			"type": 0,
+			"value": "Currency"
+		}
+	],
+	"5yO6oP": [
+		{
+			"type": 0,
+			"value": "Type of Web Shop - homesite"
+		}
+	],
+	"80Vefc": [
+		{
+			"type": 0,
+			"value": "Share on Twitter"
+		}
+	],
+	"ADKef8": [
+		{
+			"type": 0,
+			"value": "Add to cart"
+		}
+	],
+	"OKhRC6": [
+		{
+			"type": 0,
+			"value": "Share"
+		}
+	],
+	"THvAcB": [
+		{
+			"offset": 0,
+			"options": {
+				"=0": {
+					"value": [
+						{
+							"type": 0,
+							"value": "0"
+						}
+					]
+				},
+				"one": {
+					"value": [
+						{
+							"type": 7
+						},
+						{
+							"type": 0,
+							"value": " item"
+						}
+					]
+				},
+				"other": {
+					"value": [
+						{
+							"type": 7
+						},
+						{
+							"type": 0,
+							"value": " items"
+						}
+					]
+				}
+			},
+			"pluralType": "cardinal",
+			"type": 6,
+			"value": "productsCount"
+		},
+		{
+			"type": 0,
+			"value": " in cart, view bag"
+		}
+	],
+	"bdcMGy": [
+		{
+			"type": 0,
+			"value": "Open menu"
+		}
+	],
+	"dg8ZEb": [
+		{
+			"type": 0,
+			"value": "Close menu"
+		}
+	],
+	"lvqxJ+": [
+		{
+			"type": 0,
+			"value": "Get free delivery on orders over"
+		}
+	],
+	"w0iyjV": [
+		{
+			"type": 0,
+			"value": "Share on Instagram"
+		}
+	]
 }

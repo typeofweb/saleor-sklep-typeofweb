@@ -1,4 +1,7 @@
-mutation CheckoutCreateForChannel($channel: String!) {
+mutation CheckoutCreateForChannel(
+	$channel: String!
+	$languageCode: LanguageCodeEnum!
+) {
 	checkoutCreate(input: { channel: $channel, lines: [] }) {
 		checkout {
 			...CheckoutDetails

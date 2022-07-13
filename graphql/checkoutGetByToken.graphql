@@ -17,6 +17,9 @@ fragment CheckoutLineDetails on CheckoutLine {
 				url
 				alt
 			}
+			translation(languageCode: $languageCode) {
+				name
+			}
 		}
 		pricing {
 			price {
@@ -43,7 +46,10 @@ fragment CheckoutDetails on Checkout {
 		}
 	}
 }
-query CheckoutGetByToken($checkoutToken: UUID!) {
+query CheckoutGetByToken(
+	$checkoutToken: UUID!
+	$languageCode: LanguageCodeEnum!
+) {
 	checkout(token: $checkoutToken) {
 		...CheckoutDetails
 	}

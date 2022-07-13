@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useCheckoutLinesUpdateMutation } from '../../generated/graphql';
 import { useDebouncedCallback } from '../../lib/useDebouncedCallback';
 import { useEvent } from '../../lib/useEvent';
+import { useLocale } from '../../lib/useLocale';
 import { useCheckout } from '../CheckoutProvider';
 
 import type { CheckoutLineDetailsFragment } from '../../generated/graphql';
@@ -18,6 +19,7 @@ export const CheckoutListItemQuantityInput = ({
 	const { token } = useCheckout();
 	const [updateLine] = useCheckoutLinesUpdateMutation();
 	const [value, setValue] = useState(String(checkoutLine.quantity || 1));
+	const { languageCode } = useLocale();
 
 	const handleValueChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		setValue(e.currentTarget.value);
@@ -39,6 +41,7 @@ export const CheckoutListItemQuantityInput = ({
 						},
 					],
 					checkoutToken: token,
+					languageCode,
 				},
 			});
 		}),

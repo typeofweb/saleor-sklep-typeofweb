@@ -1,0 +1,44 @@
+{
+	"/hlESA": {
+		"string": "Atrybuty produktu"
+	},
+	"06VF+w": {
+		"string": "Udostępnij na Facebooku"
+	},
+	"2Zb6eo": {
+		"string": "Informacje o produkcie"
+	},
+	"55hdQy": {
+		"string": "Waluta"
+	},
+	"5yO6oP": {
+		"string": "Sklep Type of Web - strona główna"
+	},
+	"6B13ES": {
+		"string": "items in cart, view bag"
+	},
+	"80Vefc": {
+		"string": "Udostępnij na Twitterze"
+	},
+	"ADKef8": {
+		"string": "Dodaj do koszyka"
+	},
+	"OKhRC6": {
+		"string": "Udostępnij"
+	},
+	"THvAcB": {
+		"string": "{productsCount, plural, =0 {0} one {# przedmiot} few {# przedmioty} other {# przedmiotów} } w koszyku, przejdź do koszyka"
+	},
+	"bdcMGy": {
+		"string": "Otwórz menu"
+	},
+	"dg8ZEb": {
+		"string": "Zamknij menu"
+	},
+	"lvqxJ+": {
+		"string": "Darmowa dostawa dla zamówień od"
+	},
+	"w0iyjV": {
+		"string": "Udostępnij na Instagramie"
+	}
+}

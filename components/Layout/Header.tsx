@@ -237,8 +237,8 @@ export const Header = () => {
 											<a>
 												<span className="sr-only">
 													{intl.formatMessage({
-														defaultMessage: 'Sklep Type of Web - strona główna',
-														id: '2woeKq',
+														defaultMessage: 'Type of Web Shop - homesite',
+														id: '5yO6oP',
 													})}
 												</span>
 												<img
@@ -292,8 +292,8 @@ export const Header = () => {
 										<a className="lg:hidden">
 											<span className="sr-only">
 												{intl.formatMessage({
-													defaultMessage: 'Sklep Type of Web - strona główna',
-													id: '2woeKq',
+													defaultMessage: 'Type of Web Shop - homesite',
+													id: '5yO6oP',
 												})}
 											</span>
 											<img

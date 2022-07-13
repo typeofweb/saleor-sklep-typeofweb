@@ -1,4 +1,5 @@
 import { useCheckoutAddToCartMutation } from '../generated/graphql';
+import { useLocale } from '../lib/useLocale';
 
 import { useCheckout } from './CheckoutProvider';
 
@@ -17,6 +18,7 @@ export const AddProductToCartButton = ({
 }: AddProductToCartButtonProps) => {
 	const [addToCart] = useCheckoutAddToCartMutation();
 	const { token } = useCheckout();
+	const { languageCode } = useLocale();
 
 	const handleBuy = async () => {
 		if (!token || !variantId) {
@@ -24,7 +26,7 @@ export const AddProductToCartButton = ({
 		}
 
 		const result = await addToCart({
-			variables: { checkoutToken: token, variantId },
+			variables: { checkoutToken: token, variantId, languageCode },
 		});
 
 		if (result.errors?.length) {

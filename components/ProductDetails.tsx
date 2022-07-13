@@ -2,8 +2,8 @@ import { Tab } from '@headlessui/react';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { Fragment } from 'react';
+import { useIntl } from 'react-intl';
 
-import { formatMoney } from '../lib/format';
 import { classNames } from '../lib/utils';
 
 import { AddProductToCartButton } from './AddProductToCartButton';
@@ -18,10 +18,13 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
 	const router = useRouter();
+	const intl = useIntl();
 
 	const afterBuy = () => {
 		void router.push('/bag');
 	};
+
+	const description = product.translation?.description || product.description;
 
 	return (
 		<div className="bg-white">
@@ -46,21 +49,26 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 					<div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
 						<div className="flex flex-col-reverse">
 							<h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-								{product.name}
+								{product.translation?.name || product.name}
 							</h1>
 
 							<h2
 								id="information-heading"
 								className="sr-only"
 							>
-								Product information
+								{intl.formatMessage({
+									defaultMessage: 'Product information',
+									id: '2Zb6eo',
+								})}
 							</h2>
 						</div>
 
-						{product.description && (
+						{description && (
 							<div
 								className="prose mt-6"
-								dangerouslySetInnerHTML={{ __html: product.description }}
+								dangerouslySetInnerHTML={{
+									__html: description,
+								}}
 							/>
 						)}
 
@@ -69,18 +77,30 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 								onClick={afterBuy}
 								variantId={product.defaultVariant?.id}
 							>
-								Add to cart
+								{intl.formatMessage({
+									defaultMessage: 'Add to cart',
+									id: 'ADKef8',
+								})}
+
 								{/* @todo: pricing is null here, why? */}
 								{product.pricing?.priceRange?.start?.gross &&
-									formatMoney(
+									intl.formatNumber(
 										product.pricing.priceRange.start.gross.amount,
-										product.pricing.priceRange.start.gross.currency,
+										{
+											style: 'currency',
+											currency: product.pricing.priceRange.start.gross.currency,
+										},
 									)}
 							</AddProductToCartButton>
 						</div>
 
 						<div className="border-t border-gray-200 mt-10 pt-10">
-							<h3 className="text-sm font-medium text-gray-900">Share</h3>
+							<h3 className="text-sm font-medium text-gray-900">
+								{intl.formatMessage({
+									defaultMessage: 'Share',
+									id: 'OKhRC6',
+								})}
+							</h3>
 							<ul
 								role="list"
 								className="flex items-center space-x-6 mt-4"
@@ -90,7 +110,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 										href="#"
 										className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-gray-500"
 									>
-										<span className="sr-only">Share on Facebook</span>
+										<span className="sr-only">
+											{intl.formatMessage({
+												defaultMessage: 'Share on Facebook',
+												id: '06VF+w',
+											})}
+										</span>
 										<svg
 											className="w-5 h-5"
 											aria-hidden="true"
@@ -110,7 +135,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 										href="#"
 										className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-gray-500"
 									>
-										<span className="sr-only">Share on Instagram</span>
+										<span className="sr-only">
+											{intl.formatMessage({
+												defaultMessage: 'Share on Instagram',
+												id: 'w0iyjV',
+											})}
+										</span>
 										<svg
 											className="w-6 h-6"
 											aria-hidden="true"
@@ -130,7 +160,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 										href="#"
 										className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-gray-500"
 									>
-										<span className="sr-only">Share on Twitter</span>
+										<span className="sr-only">
+											{intl.formatMessage({
+												defaultMessage: 'Share on Twitter',
+												id: '80Vefc',
+											})}
+										</span>
 										<svg
 											className="w-5 h-5"
 											aria-hidden="true"
@@ -160,7 +195,10 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 											)
 										}
 									>
-										Informacje o produkcie
+										{intl.formatMessage({
+											defaultMessage: 'Additional product information',
+											id: '/hlESA',
+										})}
 									</Tab>
 								</Tab.List>
 							</div>
@@ -173,11 +211,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 												return (
 													<Fragment key={attr.attribute.name}>
 														<dt className="mt-10 font-medium text-gray-900">
-															{attr.attribute.name}
+															{attr.attribute.translation?.name ||
+																attr.attribute.name}
 														</dt>
 														<dd className="mt-2 prose prose-sm max-w-none text-gray-500">
 															{attr.values.map((value) => (
-																<p key={value.id}>{value.name}</p>
+																<p key={value.id}>
+																	{value.translation?.name || value.name}
+																</p>
 															))}
 														</dd>
 													</Fragment>

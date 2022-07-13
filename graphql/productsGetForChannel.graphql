@@ -9,6 +9,9 @@ fragment ProductListItem on Product {
 	defaultVariant {
 		id
 	}
+	translation(languageCode: $languageCode) {
+		name
+	}
 	pricing {
 		onSale
 		priceRange {
@@ -22,7 +25,11 @@ fragment ProductListItem on Product {
 	}
 }
 
-query ProductsGetForChannel($first: Int!, $channel: String!) {
+query ProductsGetForChannel(
+	$first: Int!
+	$channel: String!
+	$languageCode: LanguageCodeEnum!
+) {
 	products(first: $first, channel: $channel) {
 		edges {
 			node {

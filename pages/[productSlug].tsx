@@ -4,6 +4,7 @@ import {
 	getServerPageProductsSlugs,
 } from '../generated/page';
 import { getServerAllPagesCtx } from '../lib/getServerAllPagesCtx';
+import { localeToLanguageCode } from '../lib/localeToLangaugeCode';
 import { parseEditorJsToHtml } from '../lib/parseEditorJs';
 
 import type { InferGetStaticPathsType } from '../types';
@@ -32,7 +33,6 @@ export const getStaticPaths = async () => {
 			params: {
 				productSlug: p.node.slug,
 			},
-			// locale?: 'pl'
 		})),
 		fallback: 'blocking',
 	};
@@ -40,13 +40,19 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({
 	params,
+	locale,
+	defaultLocale,
 }: InferGetStaticPathsType<typeof getStaticPaths>) => {
 	if (!params) {
 		return { props: {}, notFound: true };
 	}
+
+	const { languageCode } = localeToLanguageCode(locale || defaultLocale);
+
 	const productDetailsRes = await getServerPageGetProductDetails({
 		variables: {
 			slug: params.productSlug,
+			languageCode,
 		},
 	});
 	const { product } = productDetailsRes.props.data;
@@ -62,6 +68,12 @@ export const getStaticProps = async ({
 		description: product.description
 			? parseEditorJsToHtml(product.description)
 			: null,
+		translation: {
+			...product.translation,
+			description: product.translation?.description
+				? parseEditorJsToHtml(product.translation.description)
+				: null,
+		},
 	};
 
 	return {

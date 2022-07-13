@@ -1,6 +1,6 @@
 import Image from 'next/future/image';
+import { useIntl } from 'react-intl';
 
-import { formatMoney } from '../../lib/format';
 import { AddProductToCartButton } from '../AddProductToCartButton';
 
 import type { ProductListItemFragment } from '../../generated/graphql';
@@ -10,6 +10,8 @@ interface ProductsListItemProps {
 }
 
 export const ProductsListItem = ({ product }: ProductsListItemProps) => {
+	const intl = useIntl();
+
 	return (
 		<div>
 			<a
@@ -26,13 +28,15 @@ export const ProductsListItem = ({ product }: ProductsListItemProps) => {
 						/>
 					)}
 				</div>
-				<h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+				<h3 className="mt-4 text-sm text-gray-700">
+					{product.translation?.name || product.name}
+				</h3>
 				{product.pricing?.priceRange?.start?.gross && (
 					<p className="my-1 text-lg font-medium text-gray-900">
-						{formatMoney(
-							product.pricing.priceRange.start.gross.amount,
-							product.pricing.priceRange.start.gross.currency,
-						)}
+						{intl.formatNumber(product.pricing.priceRange.start.gross.amount, {
+							style: 'currency',
+							currency: product.pricing.priceRange.start.gross.currency,
+						})}
 					</p>
 				)}
 			</a>

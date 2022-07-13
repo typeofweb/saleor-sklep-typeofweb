@@ -21,5 +21,6 @@
 				"import/no-default-export": 0
 			}
 		}
-	]
+	],
+	"ignorePatterns": ["next.config.js"]
 }

@@ -12,10 +12,15 @@ import {
 	useCheckoutGetByTokenQuery,
 } from '../generated/graphql';
 import * as ls from '../lib/localStorage';
+import { useLocale } from '../lib/useLocale';
 
 import { useAllPagesContext } from './AllPagesContext';
 
-import type { CheckoutGetByTokenQuery, Exact } from '../generated/graphql';
+import type {
+	CheckoutGetByTokenQuery,
+	Exact,
+	LanguageCodeEnum,
+} from '../generated/graphql';
 import type { QueryResult } from '@apollo/client';
 import type { ReactElement } from 'react';
 
@@ -28,9 +33,7 @@ interface CheckoutContextValue {
 	token: string | undefined | null;
 	checkoutByToken: QueryResult<
 		CheckoutGetByTokenQuery,
-		Exact<{
-			checkoutToken: string;
-		}>
+		Exact<{ checkoutToken: string; languageCode: LanguageCodeEnum }>
 	>;
 }
 const CheckoutContext = createContext<CheckoutContextValue | null>(null);
@@ -58,11 +61,14 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		userChannel: { selectedChannel },
 	} = useAllPagesContext();
 
+	const { languageCode } = useLocale();
+
 	const checkoutByTokenResponse = useCheckoutGetByTokenQuery({
 		skip: !tokenForChannelSlugs?.[selectedChannel.slug],
 		variables: {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-non-null-asserted-optional-chain -- query will not execute unless this is truthy
 			checkoutToken: tokenForChannelSlugs?.[selectedChannel.slug]!,
+			languageCode,
 		},
 	});
 
@@ -122,6 +128,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 			void createCheckout({
 				variables: {
 					channel: selectedChannel.slug,
+					languageCode,
 				},
 			});
 			return setState('creating-checkout-graphql');
@@ -145,6 +152,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
 		createCheckout,
 		createCheckoutResponse.data,
 		createCheckoutResponse.error,
+		languageCode,
 		selectedChannel.slug,
 		state,
 		token,

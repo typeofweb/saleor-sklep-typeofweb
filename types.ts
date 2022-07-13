@@ -1,7 +1,12 @@
+import type { GetStaticPropsContext } from 'next';
+import type { ParsedUrlQuery } from 'querystring';
+
 export type InferGetStaticPathsType<T> = T extends () => Promise<{
 	paths: Array<{ params: infer R }>;
 }>
-	? { params?: R }
+	? R extends ParsedUrlQuery
+		? GetStaticPropsContext<R>
+		: never
 	: never;
 
 export type JSONValue =

@@ -1,7 +1,6 @@
 import { invariant } from '@apollo/client/utilities/globals';
 import Link from 'next/link';
-
-import { formatMoney } from '../../lib/format';
+import { useIntl } from 'react-intl';
 
 import { CheckoutListItem } from './CheckoutListItem';
 
@@ -14,6 +13,8 @@ interface CheckoutListNotEmptyProps {
 const checkoutUrl = process.env['NEXT_PUBLIC_CHECKOUT_URL'];
 
 export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
+	const intl = useIntl();
+
 	invariant(checkoutUrl, `Missing NEXT_PUBLIC_CHECKOUT_URL!`);
 
 	return (
@@ -44,10 +45,10 @@ export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
 							<div className="py-4 flex items-center justify-between">
 								<dt className="text-gray-600">Subtotal</dt>
 								<dd className="font-medium text-gray-900">
-									{formatMoney(
-										checkout.totalPrice.gross.amount,
-										checkout.totalPrice.gross.currency,
-									)}
+									{intl.formatNumber(checkout.totalPrice.gross.amount, {
+										style: 'currency',
+										currency: checkout.totalPrice.gross.currency,
+									})}
 								</dd>
 							</div>
 							{/* @todo add shipping costs */}
@@ -64,10 +65,10 @@ export function CheckoutListNotEmpty({ checkout }: CheckoutListNotEmptyProps) {
 									Order total
 								</dt>
 								<dd className="text-base font-medium text-gray-900">
-									{formatMoney(
-										checkout.totalPrice.gross.amount,
-										checkout.totalPrice.gross.currency,
-									)}
+									{intl.formatNumber(checkout.totalPrice.gross.amount, {
+										style: 'currency',
+										currency: checkout.totalPrice.gross.currency,
+									})}
 								</dd>
 							</div>
 						</dl>

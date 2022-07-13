@@ -1,4 +1,8 @@
-mutation CheckoutAddToCart($checkoutToken: UUID!, $variantId: ID!) {
+mutation CheckoutAddToCart(
+	$checkoutToken: UUID!
+	$variantId: ID!
+	$languageCode: LanguageCodeEnum!
+) {
 	checkoutLinesAdd(
 		token: $checkoutToken
 		lines: [{ quantity: 1, variantId: $variantId }]

@@ -1,4 +1,8 @@
-mutation RemoveProductFromCheckout($checkoutToken: UUID!, $lineId: ID!) {
+mutation RemoveProductFromCheckout(
+	$checkoutToken: UUID!
+	$lineId: ID!
+	$languageCode: LanguageCodeEnum!
+) {
 	checkoutLineDelete(token: $checkoutToken, lineId: $lineId) {
 		checkout {
 			...CheckoutDetails

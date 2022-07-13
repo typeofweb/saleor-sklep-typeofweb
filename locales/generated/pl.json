@@ -1,1 +1,135 @@
-{}
+{
+	"/hlESA": [
+		{
+			"type": 0,
+			"value": "Atrybuty produktu"
+		}
+	],
+	"06VF+w": [
+		{
+			"type": 0,
+			"value": "Udostępnij na Facebooku"
+		}
+	],
+	"2Zb6eo": [
+		{
+			"type": 0,
+			"value": "Informacje o produkcie"
+		}
+	],
+	"55hdQy": [
+		{
+			"type": 0,
+			"value": "Waluta"
+		}
+	],
+	"5yO6oP": [
+		{
+			"type": 0,
+			"value": "Sklep Type of Web - strona główna"
+		}
+	],
+	"6B13ES": [
+		{
+			"type": 0,
+			"value": "items in cart, view bag"
+		}
+	],
+	"80Vefc": [
+		{
+			"type": 0,
+			"value": "Udostępnij na Twitterze"
+		}
+	],
+	"ADKef8": [
+		{
+			"type": 0,
+			"value": "Dodaj do koszyka"
+		}
+	],
+	"OKhRC6": [
+		{
+			"type": 0,
+			"value": "Udostępnij"
+		}
+	],
+	"THvAcB": [
+		{
+			"offset": 0,
+			"options": {
+				"=0": {
+					"value": [
+						{
+							"type": 0,
+							"value": "0"
+						}
+					]
+				},
+				"few": {
+					"value": [
+						{
+							"type": 7
+						},
+						{
+							"type": 0,
+							"value": " przedmioty"
+						}
+					]
+				},
+				"one": {
+					"value": [
+						{
+							"type": 7
+						},
+						{
+							"type": 0,
+							"value": " przedmiot"
+						}
+					]
+				},
+				"other": {
+					"value": [
+						{
+							"type": 7
+						},
+						{
+							"type": 0,
+							"value": " przedmiotów"
+						}
+					]
+				}
+			},
+			"pluralType": "cardinal",
+			"type": 6,
+			"value": "productsCount"
+		},
+		{
+			"type": 0,
+			"value": " w koszyku, przejdź do koszyka"
+		}
+	],
+	"bdcMGy": [
+		{
+			"type": 0,
+			"value": "Otwórz menu"
+		}
+	],
+	"dg8ZEb": [
+		{
+			"type": 0,
+			"value": "Zamknij menu"
+		}
+	],
+	"lvqxJ+": [
+		{
+			"type": 0,
+			"value": "Darmowa dostawa dla zamówień od"
+		}
+	],
+	"w0iyjV": [
+		{
+			"type": 0,
+			"value": "Udostępnij na Instagramie"
+		}
+	]
+}

@@ -1,11 +1,41 @@
 {
-  "55hdQy": {
-    "string": "Currency"
-  },
-  "5U3ydB": {
-    "string": "Get free delivery on orders over {val, number, ::currency}"
-  },
-  "dg8ZEb": {
-    "string": "Close menu"
-  }
+	"/hlESA": {
+		"string": "Additional product information"
+	},
+	"06VF+w": {
+		"string": "Share on Facebook"
+	},
+	"2Zb6eo": {
+		"string": "Product information"
+	},
+	"55hdQy": {
+		"string": "Currency"
+	},
+	"5yO6oP": {
+		"string": "Type of Web Shop - homesite"
+	},
+	"80Vefc": {
+		"string": "Share on Twitter"
+	},
+	"ADKef8": {
+		"string": "Add to cart"
+	},
+	"OKhRC6": {
+		"string": "Share"
+	},
+	"THvAcB": {
+		"string": "{productsCount, plural, =0 {0} one {# item} other {# items} } in cart, view bag"
+	},
+	"bdcMGy": {
+		"string": "Open menu"
+	},
+	"dg8ZEb": {
+		"string": "Close menu"
+	},
+	"lvqxJ+": {
+		"string": "Get free delivery on orders over"
+	},
+	"w0iyjV": {
+		"string": "Share on Instagram"
+	}
 }

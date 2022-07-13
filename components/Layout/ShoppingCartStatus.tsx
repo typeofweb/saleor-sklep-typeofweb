@@ -8,6 +8,11 @@ export const ShoppingCartStatus = () => {
 	const { checkoutByToken } = useCheckout();
 	const intl = useIntl();
 
+	const productsCount = checkoutByToken.data?.checkout?.lines.reduce(
+		(acc, line) => acc + line.quantity,
+		0,
+	);
+
 	return (
 		<div className="flex-1 flex items-center justify-end">
 			<div className="flex items-center lg:ml-8">
@@ -19,16 +24,20 @@ export const ShoppingCartStatus = () => {
 								aria-hidden="true"
 							/>
 							<span className="ml-2 w-6 text-left text-sm font-medium text-gray-700 group-hover:text-gray-800 tabular-nums">
-								{checkoutByToken.data?.checkout?.lines.reduce(
-									(acc, line) => acc + line.quantity,
-									0,
-								)}
+								{productsCount}
 							</span>
 							<span className="sr-only">
-								{intl.formatMessage({
-									defaultMessage: 'items in cart, view bag',
-									id: '6B13ES',
-								})}
+								{intl.formatMessage(
+									{
+										defaultMessage: `{productsCount, plural,
+	=0 {0}
+	one {# item}
+	other {# items}
+} in cart, view bag`,
+										id: 'THvAcB',
+									},
+									{ productsCount },
+								)}
 							</span>
 						</a>
 					</Link>

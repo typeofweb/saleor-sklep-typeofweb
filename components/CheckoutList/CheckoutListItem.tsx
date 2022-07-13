@@ -1,7 +1,8 @@
 import Image from 'next/future/image';
+import { useIntl } from 'react-intl';
 
 import { useRemoveProductFromCheckoutMutation } from '../../generated/graphql';
-import { formatMoney } from '../../lib/format';
+import { useLocale } from '../../lib/useLocale';
 import { useCheckout } from '../CheckoutProvider';
 
 import { CheckoutListItemQuantityInput } from './CheckoutListItemQuantityInput';
@@ -15,6 +16,8 @@ interface CheckoutListItemProps {
 export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 	const { token } = useCheckout();
 	const [removeProductFromCheckout] = useRemoveProductFromCheckoutMutation();
+	const { languageCode } = useLocale();
+	const intl = useIntl();
 
 	if (!token) {
 		return <div />;
@@ -25,6 +28,7 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 			variables: {
 				lineId: checkoutLine.id,
 				checkoutToken: token,
+				languageCode,
 			},
 		});
 	};
@@ -50,16 +54,20 @@ export const CheckoutListItem = ({ checkoutLine }: CheckoutListItemProps) => {
 									href={`/${checkoutLine.variant.product.slug}`}
 									className="font-medium text-gray-700 hover:text-gray-800"
 								>
-									{checkoutLine.variant.product.name}
+									{checkoutLine.variant.product.translation?.name ||
+										checkoutLine.variant.product.name}
 								</a>
 							</h3>
 						</div>
 
 						<p className="text-sm font-medium text-gray-900 text-right">
 							{checkoutLine.variant.pricing?.price?.gross &&
-								formatMoney(
+								intl.formatNumber(
 									checkoutLine.variant.pricing.price.gross.amount,
-									checkoutLine.variant.pricing.price.gross.currency,
+									{
+										style: 'currency',
+										currency: checkoutLine.variant.pricing.price.gross.currency,
+									},
 								)}
 						</p>
 					</div>

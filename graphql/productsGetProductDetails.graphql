@@ -4,13 +4,24 @@ fragment ProductDetails on Product {
 	defaultVariant {
 		id
 	}
+	translation(languageCode: $languageCode) {
+		name
+		description
+	}
 	attributes {
 		attribute {
 			name
+			unit
+			translation(languageCode: $languageCode) {
+				name
+			}
 		}
 		values {
 			id
 			name
+			translation(languageCode: $languageCode) {
+				name
+			}
 		}
 	}
 	slug
@@ -32,7 +43,7 @@ fragment ProductDetails on Product {
 	description
 }
 
-query GetProductDetails($slug: String!) {
+query GetProductDetails($slug: String!, $languageCode: LanguageCodeEnum!) {
 	product(slug: $slug) {
 		...ProductDetails
 	}

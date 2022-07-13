@@ -20637,6 +20637,7 @@ export type ChannelsGetQuery = {
 export type CheckoutAddToCartMutationVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
 	variantId: Scalars['ID'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type CheckoutAddToCartMutation = {
@@ -20674,6 +20675,10 @@ export type CheckoutAddToCartMutation = {
 							readonly url: string;
 							readonly alt?: string | null;
 						} | null;
+						readonly translation?: {
+							readonly __typename?: 'ProductTranslation';
+							readonly name?: string | null;
+						} | null;
 					};
 					readonly pricing?: {
 						readonly __typename?: 'VariantPricingInfo';
@@ -20706,6 +20711,7 @@ export type CheckoutAddToCartMutation = {
 
 export type CheckoutCreateForChannelMutationVariables = Exact<{
 	channel: Scalars['String'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type CheckoutCreateForChannelMutation = {
@@ -20742,6 +20748,10 @@ export type CheckoutCreateForChannelMutation = {
 							readonly __typename?: 'Image';
 							readonly url: string;
 							readonly alt?: string | null;
+						} | null;
+						readonly translation?: {
+							readonly __typename?: 'ProductTranslation';
+							readonly name?: string | null;
 						} | null;
 					};
 					readonly pricing?: {
@@ -20795,6 +20805,10 @@ export type CheckoutLineDetailsFragment = {
 				readonly url: string;
 				readonly alt?: string | null;
 			} | null;
+			readonly translation?: {
+				readonly __typename?: 'ProductTranslation';
+				readonly name?: string | null;
+			} | null;
 		};
 		readonly pricing?: {
 			readonly __typename?: 'VariantPricingInfo';
@@ -20841,6 +20855,10 @@ export type CheckoutDetailsFragment = {
 					readonly url: string;
 					readonly alt?: string | null;
 				} | null;
+				readonly translation?: {
+					readonly __typename?: 'ProductTranslation';
+					readonly name?: string | null;
+				} | null;
 			};
 			readonly pricing?: {
 				readonly __typename?: 'VariantPricingInfo';
@@ -20867,6 +20885,7 @@ export type CheckoutDetailsFragment = {
 
 export type CheckoutGetByTokenQueryVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type CheckoutGetByTokenQuery = {
@@ -20902,6 +20921,10 @@ export type CheckoutGetByTokenQuery = {
 						readonly url: string;
 						readonly alt?: string | null;
 					} | null;
+					readonly translation?: {
+						readonly __typename?: 'ProductTranslation';
+						readonly name?: string | null;
+					} | null;
 				};
 				readonly pricing?: {
 					readonly __typename?: 'VariantPricingInfo';
@@ -20930,6 +20953,7 @@ export type CheckoutGetByTokenQuery = {
 export type CheckoutLinesUpdateMutationVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
 	lines: ReadonlyArray<CheckoutLineUpdateInput> | CheckoutLineUpdateInput;
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type CheckoutLinesUpdateMutation = {
@@ -20967,6 +20991,10 @@ export type CheckoutLinesUpdateMutation = {
 							readonly url: string;
 							readonly alt?: string | null;
 						} | null;
+						readonly translation?: {
+							readonly __typename?: 'ProductTranslation';
+							readonly name?: string | null;
+						} | null;
 					};
 					readonly pricing?: {
 						readonly __typename?: 'VariantPricingInfo';
@@ -21000,6 +21028,7 @@ export type CheckoutLinesUpdateMutation = {
 export type RemoveProductFromCheckoutMutationVariables = Exact<{
 	checkoutToken: Scalars['UUID'];
 	lineId: Scalars['ID'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type RemoveProductFromCheckoutMutation = {
@@ -21036,6 +21065,10 @@ export type RemoveProductFromCheckoutMutation = {
 							readonly __typename?: 'Image';
 							readonly url: string;
 							readonly alt?: string | null;
+						} | null;
+						readonly translation?: {
+							readonly __typename?: 'ProductTranslation';
+							readonly name?: string | null;
 						} | null;
 					};
 					readonly pricing?: {
@@ -21081,6 +21114,10 @@ export type ProductListItemFragment = {
 		readonly __typename?: 'ProductVariant';
 		readonly id: string;
 	} | null;
+	readonly translation?: {
+		readonly __typename?: 'ProductTranslation';
+		readonly name?: string | null;
+	} | null;
 	readonly pricing?: {
 		readonly __typename?: 'ProductPricingInfo';
 		readonly onSale?: boolean | null;
@@ -21101,6 +21138,7 @@ export type ProductListItemFragment = {
 export type ProductsGetForChannelQueryVariables = Exact<{
 	first: Scalars['Int'];
 	channel: Scalars['String'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type ProductsGetForChannelQuery = {
@@ -21122,6 +21160,10 @@ export type ProductsGetForChannelQuery = {
 				readonly defaultVariant?: {
 					readonly __typename?: 'ProductVariant';
 					readonly id: string;
+				} | null;
+				readonly translation?: {
+					readonly __typename?: 'ProductTranslation';
+					readonly name?: string | null;
 				} | null;
 				readonly pricing?: {
 					readonly __typename?: 'ProductPricingInfo';
@@ -21153,16 +21195,30 @@ export type ProductDetailsFragment = {
 		readonly __typename?: 'ProductVariant';
 		readonly id: string;
 	} | null;
+	readonly translation?: {
+		readonly __typename?: 'ProductTranslation';
+		readonly name?: string | null;
+		readonly description?: string | null;
+	} | null;
 	readonly attributes: ReadonlyArray<{
 		readonly __typename?: 'SelectedAttribute';
 		readonly attribute: {
 			readonly __typename?: 'Attribute';
 			readonly name?: string | null;
+			readonly unit?: MeasurementUnitsEnum | null;
+			readonly translation?: {
+				readonly __typename?: 'AttributeTranslation';
+				readonly name: string;
+			} | null;
 		};
 		readonly values: ReadonlyArray<{
 			readonly __typename?: 'AttributeValue';
 			readonly id: string;
 			readonly name?: string | null;
+			readonly translation?: {
+				readonly __typename?: 'AttributeValueTranslation';
+				readonly name: string;
+			} | null;
 		}>;
 	}>;
 	readonly media?: ReadonlyArray<{
@@ -21189,6 +21245,7 @@ export type ProductDetailsFragment = {
 
 export type GetProductDetailsQueryVariables = Exact<{
 	slug: Scalars['String'];
+	languageCode: LanguageCodeEnum;
 }>;
 
 export type GetProductDetailsQuery = {
@@ -21203,16 +21260,30 @@ export type GetProductDetailsQuery = {
 			readonly __typename?: 'ProductVariant';
 			readonly id: string;
 		} | null;
+		readonly translation?: {
+			readonly __typename?: 'ProductTranslation';
+			readonly name?: string | null;
+			readonly description?: string | null;
+		} | null;
 		readonly attributes: ReadonlyArray<{
 			readonly __typename?: 'SelectedAttribute';
 			readonly attribute: {
 				readonly __typename?: 'Attribute';
 				readonly name?: string | null;
+				readonly unit?: MeasurementUnitsEnum | null;
+				readonly translation?: {
+					readonly __typename?: 'AttributeTranslation';
+					readonly name: string;
+				} | null;
 			};
 			readonly values: ReadonlyArray<{
 				readonly __typename?: 'AttributeValue';
 				readonly id: string;
 				readonly name?: string | null;
+				readonly translation?: {
+					readonly __typename?: 'AttributeValueTranslation';
+					readonly name: string;
+				} | null;
 			}>;
 		}>;
 		readonly media?: ReadonlyArray<{
@@ -21293,6 +21364,9 @@ export const CheckoutLineDetailsFragmentDoc = gql`
 					url
 					alt
 				}
+				translation(languageCode: $languageCode) {
+					name
+				}
 			}
 			pricing {
 				price {
@@ -21335,6 +21409,9 @@ export const ProductListItemFragmentDoc = gql`
 		defaultVariant {
 			id
 		}
+		translation(languageCode: $languageCode) {
+			name
+		}
 		pricing {
 			onSale
 			priceRange {
@@ -21355,13 +21432,24 @@ export const ProductDetailsFragmentDoc = gql`
 		defaultVariant {
 			id
 		}
+		translation(languageCode: $languageCode) {
+			name
+			description
+		}
 		attributes {
 			attribute {
 				name
+				unit
+				translation(languageCode: $languageCode) {
+					name
+				}
 			}
 			values {
 				id
 				name
+				translation(languageCode: $languageCode) {
+					name
+				}
 			}
 		}
 		slug
@@ -21440,7 +21528,11 @@ export type ChannelsGetQueryResult = Apollo.QueryResult<
 	ChannelsGetQueryVariables
 >;
 export const CheckoutAddToCartDocument = gql`
-	mutation CheckoutAddToCart($checkoutToken: UUID!, $variantId: ID!) {
+	mutation CheckoutAddToCart(
+		$checkoutToken: UUID!
+		$variantId: ID!
+		$languageCode: LanguageCodeEnum!
+	) {
 		checkoutLinesAdd(
 			token: $checkoutToken
 			lines: [{ quantity: 1, variantId: $variantId }]
@@ -21475,6 +21567,7 @@ export type CheckoutAddToCartMutationFn = Apollo.MutationFunction<
  *   variables: {
  *      checkoutToken: // value for 'checkoutToken'
  *      variantId: // value for 'variantId'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21500,7 +21593,10 @@ export type CheckoutAddToCartMutationOptions = Apollo.BaseMutationOptions<
 	CheckoutAddToCartMutationVariables
 >;
 export const CheckoutCreateForChannelDocument = gql`
-	mutation CheckoutCreateForChannel($channel: String!) {
+	mutation CheckoutCreateForChannel(
+		$channel: String!
+		$languageCode: LanguageCodeEnum!
+	) {
 		checkoutCreate(input: { channel: $channel, lines: [] }) {
 			checkout {
 				...CheckoutDetails
@@ -21528,6 +21624,7 @@ export type CheckoutCreateForChannelMutationFn = Apollo.MutationFunction<
  * const [checkoutCreateForChannelMutation, { data, loading, error }] = useCheckoutCreateForChannelMutation({
  *   variables: {
  *      channel: // value for 'channel'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21554,7 +21651,10 @@ export type CheckoutCreateForChannelMutationOptions =
 		CheckoutCreateForChannelMutationVariables
 	>;
 export const CheckoutGetByTokenDocument = gql`
-	query CheckoutGetByToken($checkoutToken: UUID!) {
+	query CheckoutGetByToken(
+		$checkoutToken: UUID!
+		$languageCode: LanguageCodeEnum!
+	) {
 		checkout(token: $checkoutToken) {
 			...CheckoutDetails
 		}
@@ -21575,6 +21675,7 @@ export const CheckoutGetByTokenDocument = gql`
  * const { data, loading, error } = useCheckoutGetByTokenQuery({
  *   variables: {
  *      checkoutToken: // value for 'checkoutToken'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21616,6 +21717,7 @@ export const CheckoutLinesUpdateDocument = gql`
 	mutation CheckoutLinesUpdate(
 		$checkoutToken: UUID!
 		$lines: [CheckoutLineUpdateInput!]!
+		$languageCode: LanguageCodeEnum!
 	) {
 		checkoutLinesUpdate(token: $checkoutToken, lines: $lines) {
 			checkout {
@@ -21648,6 +21750,7 @@ export type CheckoutLinesUpdateMutationFn = Apollo.MutationFunction<
  *   variables: {
  *      checkoutToken: // value for 'checkoutToken'
  *      lines: // value for 'lines'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21673,7 +21776,11 @@ export type CheckoutLinesUpdateMutationOptions = Apollo.BaseMutationOptions<
 	CheckoutLinesUpdateMutationVariables
 >;
 export const RemoveProductFromCheckoutDocument = gql`
-	mutation RemoveProductFromCheckout($checkoutToken: UUID!, $lineId: ID!) {
+	mutation RemoveProductFromCheckout(
+		$checkoutToken: UUID!
+		$lineId: ID!
+		$languageCode: LanguageCodeEnum!
+	) {
 		checkoutLineDelete(token: $checkoutToken, lineId: $lineId) {
 			checkout {
 				...CheckoutDetails
@@ -21705,6 +21812,7 @@ export type RemoveProductFromCheckoutMutationFn = Apollo.MutationFunction<
  *   variables: {
  *      checkoutToken: // value for 'checkoutToken'
  *      lineId: // value for 'lineId'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21731,7 +21839,11 @@ export type RemoveProductFromCheckoutMutationOptions =
 		RemoveProductFromCheckoutMutationVariables
 	>;
 export const ProductsGetForChannelDocument = gql`
-	query ProductsGetForChannel($first: Int!, $channel: String!) {
+	query ProductsGetForChannel(
+		$first: Int!
+		$channel: String!
+		$languageCode: LanguageCodeEnum!
+	) {
 		products(first: $first, channel: $channel) {
 			edges {
 				node {
@@ -21757,6 +21869,7 @@ export const ProductsGetForChannelDocument = gql`
  *   variables: {
  *      first: // value for 'first'
  *      channel: // value for 'channel'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
@@ -21795,7 +21908,7 @@ export type ProductsGetForChannelQueryResult = Apollo.QueryResult<
 	ProductsGetForChannelQueryVariables
 >;
 export const GetProductDetailsDocument = gql`
-	query GetProductDetails($slug: String!) {
+	query GetProductDetails($slug: String!, $languageCode: LanguageCodeEnum!) {
 		product(slug: $slug) {
 			...ProductDetails
 		}
@@ -21816,6 +21929,7 @@ export const GetProductDetailsDocument = gql`
  * const { data, loading, error } = useGetProductDetailsQuery({
  *   variables: {
  *      slug: // value for 'slug'
+ *      languageCode: // value for 'languageCode'
  *   },
  * });
  */
