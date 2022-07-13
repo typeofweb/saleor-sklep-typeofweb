@@ -21,6 +21,10 @@ const nextConfig = {
 		defaultLocale: 'pl',
 		locales: ['pl', 'en'],
 	},
+	experimental: {
+		runtime: 'experimental-edge',
+		images: { allowFutureImage: true },
+	},
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
