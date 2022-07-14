@@ -5,7 +5,6 @@ import useCookie from 'react-use-cookie';
 export const Footer = () => {
 	const { locales, locale } = useRouter();
 	const { asPath } = useRouter();
-	console.log(asPath);
 	const [, setLocaleCookie] = useCookie('NEXT_LOCALE');
 
 	const getHandleLocaleClick = (locale: string) => () => {

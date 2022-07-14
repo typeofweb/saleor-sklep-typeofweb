@@ -43,7 +43,10 @@ export const ProductsListItem = ({ product }: ProductsListItemProps) => {
 				)}
 			</a>
 			<AddProductToCartButton variantId={product.defaultVariant?.id}>
-				Add to cart
+				{intl.formatMessage({
+					defaultMessage: 'Add to cart',
+					id: 'ADKef8',
+				})}
 			</AddProductToCartButton>
 		</div>
 	);
